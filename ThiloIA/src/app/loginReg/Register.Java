@@ -1,5 +1,5 @@
 package app.loginReg;
-
+import java.sql.*; 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.Classes.SQLRequest;
 
 
 
@@ -28,9 +30,23 @@ public class Register implements ActionListener{
 
 
     public static int regVerification(String username, char[] password, char[] passwordVer, String email){
-        
-        //TODO - Insert search for username - return 1
+        String output;
+        ResultSet result;
+        String SQL = "SELECT Username FROM Users";
+        result = SQLRequest.SQLQuery(SQL);
 
+        try {
+            while(result.next()){
+                output = result.getString("Username");
+                if(username.equals(output)){
+                    return 1;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL BROKEN " + ex.getMessage());
+        }      
+
+    
         if (password.length < 8 || password.length > 64){
             return 2;
         }
@@ -39,7 +55,7 @@ public class Register implements ActionListener{
             return 3;
         } else{
             for(int i=0; i<(password.length); i++){
-                if (!password[i].equals(passwordVer[i])){
+                if (password[i] != passwordVer[i]){
                     return 3;
                 }
             }
@@ -53,7 +69,6 @@ public class Register implements ActionListener{
 
 
     public static void main(String[] args) {
-        
 
         frame = new JFrame(); 
         frame.setSize(1000, 600);
@@ -218,7 +233,18 @@ public class Register implements ActionListener{
             }
 
             else if(status == -1){
+                
+                
+
+                String plaintextPassword = new String(tempPassword);
+                String SQL = "INSERT INTO Users VALUES ( \"" + tempUsername + "\", \"" + plaintextPassword + "\", \"" + tempEmail + "\")";
+                SQLRequest.SQLUpdate(SQL);
+
+
+
+
                 JOptionPane.showMessageDialog(frame, "Account successfully created");
+                Login.main(null);
             }
             
         

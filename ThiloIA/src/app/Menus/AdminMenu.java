@@ -12,10 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class UserMenu implements ActionListener {
+public class AdminMenu implements ActionListener {
     private static JFrame frame;
     private static JPanel  panel;
-    private static JButton loanCheck, loanItem;
+    private static JButton search, editItems, confirmReturn, editLoan, loanItemA;
     public static void main(String[] args) {
         
 
@@ -54,24 +54,55 @@ public class UserMenu implements ActionListener {
         gbc.fill = GridBagConstraints.BOTH;
         panel.add(subPanel, gbc);
 
-        loanItem = new JButton("Loan an item");
-        loanItem.addActionListener(new UserMenu());
+        search = new JButton("Search");
+        search.addActionListener(new AdminMenu());
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
         gbc.weighty = 1;
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(30, 30, 30, 30);
-        subPanel.add(loanItem, gbc);
+        gbc.insets = new Insets(20, 20, 20, 20);
+        subPanel.add(search, gbc);
 
-        loanCheck = new JButton("Check loans");
-        loanCheck.addActionListener(new UserMenu());
-        gbc.gridx = 1;
-        gbc.gridy = 0;
+        editItems = new JButton("Edit Item Collection");
+        editItems.addActionListener(new AdminMenu());
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        subPanel.add(loanCheck, gbc);
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(15, 15, 15, 15);
+        subPanel.add(editItems, gbc);
+
+        confirmReturn = new JButton("Confirm returns");
+        confirmReturn.addActionListener(new AdminMenu());
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(15, 15, 15, 15);
+        subPanel.add(confirmReturn, gbc);
+
+        loanItemA = new JButton("Loan an item");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        subPanel.add(loanItemA, gbc);
+
+        editLoan = new JButton("Edit a loan");
+        editLoan.addActionListener(new AdminMenu());
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        subPanel.add(editLoan, gbc);
 
         
 
@@ -81,10 +112,10 @@ public class UserMenu implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-    if (e.getSource().equals(loanCheck)){
+    if (e.getSource().equals(editLoan)){
 
-    } else if(e.getSource().equals(loanItem)){
-
+    } else if(e.getSource().equals(loanItemA)){
+        
     }
     
     }
