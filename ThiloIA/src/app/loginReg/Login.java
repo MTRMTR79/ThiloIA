@@ -9,6 +9,7 @@ import javax.swing.SwingConstants;
 import java.sql.*;
 
 import app.Classes.SQLRequest;
+import app.Classes.User;
 import app.Menus.AdminMenu;
 import app.Menus.UserMenu;
 
@@ -164,13 +165,14 @@ public class Login implements ActionListener {
             if (status == 2){
                 AdminMenu.main(null);
             }else if(status == 1){
+                User.storeUser(username);
                 UserMenu.main(null);
             }else if(status == -1){
                 loginError.setVisible(true);
             }
 
         }else if(e.getSource().equals(registerButton)){
-        Register.main(null);
+            Register.main(null);
 
         }
     
