@@ -9,12 +9,10 @@ public class SQLRequest {
 
 
         try{
-            Class.forName("com.mysql.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost: 3306/IdeasHub", "root", "A5M%r5vWMxSx");
+            Class.forName("com.mysql.jdbc.Driver");
             sqlst = con.createStatement();
             result = sqlst.executeQuery(SQL);
-            
-            con.close();
 
 
         }
@@ -23,7 +21,7 @@ public class SQLRequest {
         }
         
         catch (SQLException ex){
-            System.out.println("SQL BROKEN " + ex.getMessage());
+            System.out.println("SQL Request page BROKEN " + ex.getMessage());
         }
         return result;
     }
@@ -36,7 +34,6 @@ public class SQLRequest {
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost: 3306/IdeasHub", "root", "A5M%r5vWMxSx");
             sqlst = con.createStatement();
             sqlst.executeUpdate(SQL);
-            con.close();
 
 
         }

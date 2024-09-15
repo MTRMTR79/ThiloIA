@@ -158,7 +158,7 @@ public class Register implements ActionListener{
         gbc.gridy = 6;
         inputPanel.add(email, gbc);
 
-        emailTextField = new JTextField("@gapps.uwcsea.edu.sg");
+        emailTextField = new JTextField();
         gbc.gridx = 1;
         gbc.gridy = 6;
         inputPanel.add(emailTextField, gbc);

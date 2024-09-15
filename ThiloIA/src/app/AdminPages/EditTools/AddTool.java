@@ -1,6 +1,9 @@
 package app.AdminPages.EditTools;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,12 +16,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AddTool implements ActionListener {
     private static JFrame frame;
     private static JPanel  panel;
-    private static JLabel emptyError;
+    private static JLabel emptyError, itemGroup;
     private static JTextField itemNameTextField;
+    private static JComboBox<String> itemTypeComboBox, itemGroupComboBox;
     private static JButton confirm, backButton;
     public static void main(String[] args) {
 
@@ -87,7 +93,6 @@ public class AddTool implements ActionListener {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-
         subPanel.add(itemName, gbc);
 
         itemNameTextField = new JTextField();
@@ -104,11 +109,65 @@ public class AddTool implements ActionListener {
         emptyError.setVisible(false);
         subPanel.add(emptyError, gbc);
 
+        JLabel itemType = new JLabel("Item Type:");
+        gbc.insets = new Insets(5,50,5,50);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        subPanel.add(itemType, gbc);
+
+        String SQL = "SELECT DISTINCT ItemType FROM ItemGroups";
+        Queue<String> itemTypeQueue = new LinkedList<>();
+        itemTypeQueue.add("-");
+        ResultSet result = SQLRequest.SQLQuery(SQL);
+
+        try {
+            while (result.next()){
+                itemTypeQueue.add(result.getString("ItemType"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL BROKEN " + ex.getMessage());
+        }
+
+        int Length = itemTypeQueue.size();
+        String[] itemTypes = new String[Length];
+
+        for (int i=0; i<(Length);i++){
+            itemTypes[i] = itemTypeQueue.remove();
+        }
+
+
+        itemTypeComboBox = new JComboBox<String>(itemTypes);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        itemTypeComboBox.addActionListener(new AddTool());
+        subPanel.add(itemTypeComboBox, gbc);
+
+        itemGroup = new JLabel("Item Group:");
+        gbc.insets = new Insets(5,50,5,50);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        itemGroup.setVisible(false);
+        subPanel.add(itemGroup, gbc);
+
+        String[] ItemGroup = new String[] {"-"};
+        itemGroupComboBox = new JComboBox<String>(ItemGroup);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        itemGroupComboBox.setVisible(false);
+        subPanel.add(itemGroupComboBox, gbc);
 
         confirm = new JButton("Add");
         confirm.addActionListener(new AddTool());
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;
         subPanel.add(confirm, gbc);
 
@@ -123,7 +182,17 @@ public class AddTool implements ActionListener {
             }
             else{
                 String name = itemNameTextField.getText();
-                String SQL = "INSERT INTO Items (ItemName) VALUES (\"" + name + "\")";
+                String type = itemTypeComboBox.getSelectedItem().toString();
+                String group = itemGroupComboBox.getSelectedItem().toString();
+                String SQL;
+                if (type.equals("-")){
+                    SQL = "INSERT INTO Items (`ItemName`) VALUES (\"" + name + "\")";
+                }else if (group.equals("-")){
+                    SQL = "INSERT INTO Items (`ItemName`, `Type`) VALUES (\"" + name + "\", \""+ type + "\")";
+                } else {
+                    SQL = "INSERT INTO Items (`ItemName`, `Type`, `Group`) VALUES (\"" + name + "\", \""+ type + "\", \"" + group + "\")";
+                }
+                System.out.println(SQL);
                 SQLRequest.SQLUpdate(SQL);
                 itemNameTextField.setText("");
                 JOptionPane.showMessageDialog(frame, "Item successfully added");
@@ -131,6 +200,33 @@ public class AddTool implements ActionListener {
             }
         }else if(e.getSource().equals(backButton)){
             EditToolsMenu.main(null);
+        }else if(e.getSource().equals(itemTypeComboBox)){
+            itemGroupComboBox.removeAllItems();
+            String SQL = "SELECT ItemGroup FROM ItemGroups WHERE ItemType = \"" + itemTypeComboBox.getSelectedItem() + "\"";
+            Queue<String> itemGroupQueue = new LinkedList<>();
+            itemGroupQueue.add("-");
+            ResultSet result = SQLRequest.SQLQuery(SQL);
+
+            try {
+                while (result.next()){
+                    itemGroupQueue.add(result.getString("ItemGroup"));
+                }
+            } catch (SQLException ex) {
+                System.out.println("SQL BROKEN " + ex.getMessage());
+            }
+
+            int Length = itemGroupQueue.size();
+            String[] itemGroups = new String[Length];
+
+            for (int i=0; i<(Length);i++){
+                itemGroups[i] = itemGroupQueue.remove();
+                System.out.println(itemGroups[i]);
+            }
+            for (int i=0; i<(Length);i++){
+            itemGroupComboBox.addItem(itemGroups[i]);
+            }
+            itemGroupComboBox.setVisible(true);
+            itemGroup.setVisible(true);
         }
     }
 }
