@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import app.AdminPages.EditTools.EditToolsMenu;
+import app.AdminPages.Loans.AddLoan;
 import app.AdminPages.Search.SearchQuery;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -90,6 +91,7 @@ public class AdminMenu implements ActionListener {
         subPanel.add(confirmReturn, gbc);
 
         loanItemA = new JButton("Loan an item");
+        loanItemA.addActionListener(new AdminMenu());
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 1;
@@ -117,6 +119,7 @@ public class AdminMenu implements ActionListener {
     if (e.getSource().equals(editLoan)){
 
     }else if(e.getSource().equals(loanItemA)){
+        AddLoan.main(null);
         
     }else if(e.getSource().equals(search)){
         SearchQuery.main(null);

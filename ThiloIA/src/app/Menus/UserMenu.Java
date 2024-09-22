@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import app.Classes.User;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,7 +37,7 @@ public class UserMenu implements ActionListener {
         gbc.insets = new Insets(10, 10, 10, 10);
         frame.add(panel);
 
-        JLabel header = new JLabel("Menu");
+        JLabel header = new JLabel("Welcome to Ideas Hub Loans, "+ User.username );
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
