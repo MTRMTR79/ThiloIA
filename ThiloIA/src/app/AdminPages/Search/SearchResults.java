@@ -10,13 +10,18 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import app.AdminPages.Search.Details.UserDetails;
 import app.Classes.SQLRequest;
+import app.Classes.User;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -120,12 +125,23 @@ public class SearchResults implements ActionListener {
         }
         
         
-        
-
-
-
         resultsTable = new JTable(model);
+        resultsTable.setDefaultEditor(Object.class, null);;
         resultsTable.setFillsViewportHeight(true);
+        resultsTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent doubleClick) {
+                Point point = doubleClick.getPoint();
+                int row = resultsTable.rowAtPoint(point);
+                if (doubleClick.getClickCount() == 2 && resultsTable.getSelectedRow() != -1) {
+                    if (queryType.equals("Username")){
+                        String username = resultsTable.getModel().getValueAt(row, 0).toString();
+                        User user = new User(username);
+                        UserDetails.main(null, user, query, queryType);
+
+                    }
+                }
+            }
+        });
 
         JScrollPane scrollPane = new JScrollPane(resultsTable);
         gbc.gridx = 0;

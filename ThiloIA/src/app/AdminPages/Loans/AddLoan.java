@@ -13,14 +13,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import app.Classes.SQLRequest;
 import app.Menus.AdminMenu;
-import java.text.*;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.sql.Date;
 import java.sql.SQLException;
 
 public class AddLoan implements ActionListener {
