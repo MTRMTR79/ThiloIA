@@ -194,6 +194,8 @@ public class Register implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(loginButton)){
             Login.main(null);
+            frame.setVisible(false);
+            frame.dispose();
 
         }else if(e.getSource().equals(registerButton)){
             String tempUsername = usernameTextField.getText();
@@ -245,6 +247,8 @@ public class Register implements ActionListener{
 
                 JOptionPane.showMessageDialog(frame, "Account successfully created");
                 Login.main(null);
+                frame.setVisible(false);
+                frame.dispose();
             }
             
         

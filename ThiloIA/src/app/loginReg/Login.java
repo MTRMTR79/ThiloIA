@@ -167,12 +167,16 @@ public class Login implements ActionListener {
             }else if(status == 1){
                 User.storeUser(username);
                 UserMenu.main(null);
+                frame.setVisible(false);
+                frame.dispose();
             }else if(status == -1){
                 loginError.setVisible(true);
             }
 
         }else if(e.getSource().equals(registerButton)){
             Register.main(null);
+            frame.setVisible(false);
+            frame.dispose();
 
         }
     

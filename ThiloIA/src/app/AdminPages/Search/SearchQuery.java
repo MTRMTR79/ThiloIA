@@ -90,7 +90,7 @@ public class SearchQuery implements ActionListener {
         gbc.weightx = 2;
         subPanel.add(searchQuery, gbc);
 
-        String[] searchtypes = new String[]{"Item Name", "Username",};
+        String[] searchtypes = new String[]{"Item Name", "Username", "Loans"};
         searchType = new JComboBox<String>(searchtypes);
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -129,9 +129,13 @@ public class SearchQuery implements ActionListener {
                 String queryType = searchType.getSelectedItem().toString();
                 
                 SearchResults.main(null, query, queryType);
+                frame.setVisible(false);
+                frame.dispose();
             }
         }else if(e.getSource().equals(backButton)){
             AdminMenu.main(null);
+            frame.setVisible(false);
+            frame.dispose();
         }
     }
 }

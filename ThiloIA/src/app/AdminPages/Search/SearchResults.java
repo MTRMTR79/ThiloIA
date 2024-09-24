@@ -24,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class SearchResults implements ActionListener {
     private static JFrame frame;
@@ -120,9 +121,41 @@ public class SearchResults implements ActionListener {
                 System.out.println("SQL BROKEN " + ex.getMessage());
             }
 
+        }else if(queryType.equals("Loans")){
+            model = new DefaultTableModel(new Object[]{"Item ID","Item Name", "Username", "Date Borrowed" , "Due Date", "Date Returned", "Status"},0);
+            String SQL = "SELECT Loans.*, Items.ItemName FROM Loans LEFT JOIN Items ON Loans.ItemID = Items.ItemID WHERE ItemName LIKE  \"%" + query + "%\" OR Username LIKE  \"%" + query + "%\"";
+            String ItemID;
+            String ItemName;
+            String Username;
+            LocalDate DateBorrowed;
+            LocalDate DueDate;
+            LocalDate DateReturned;
+            String Status;
+            ResultSet result = SQLRequest.SQLQuery(SQL);
+            try {
+                while(result.next()){
+                    ItemID = result.getString("ItemID");
+                    ItemName = result.getString("ItemName");
+                    Username = result.getString("Username");
+                    DateBorrowed = result.getDate("DateBorrowed").toLocalDate();
+                    DueDate = result.getDate("DueDate").toLocalDate();
+                    Status = result.getString("Status");
+                    if (result.getDate("DateReturned") != null){
+                        DateReturned = result.getDate("DateReturned").toLocalDate();
+                        model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, DateReturned, Status });
+                    }else{
+                    model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, null, Status });
+                    }
+
+                }
+            } catch (SQLException ex){
+                System.out.println("SQL BROKEN " + ex.getMessage());
+            }
+
         }else {
             model = new DefaultTableModel(new Object[]{},0);
         }
+
         
         
         resultsTable = new JTable(model);
@@ -166,6 +199,8 @@ public class SearchResults implements ActionListener {
             
         }else if(e.getSource().equals(backButton)){
             SearchQuery.main(null);
+            frame.setVisible(false);
+            frame.dispose();
         }
     }
 }

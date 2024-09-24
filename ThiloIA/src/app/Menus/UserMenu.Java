@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import app.Classes.User;
+import app.UserPages.CheckLoans;
+import app.UserPages.LoanItem;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -84,9 +86,10 @@ public class UserMenu implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(loanCheck)){
+        CheckLoans.main(null);
 
     } else if(e.getSource().equals(loanItem)){
-
+        LoanItem.main(null);
     }
     
     }

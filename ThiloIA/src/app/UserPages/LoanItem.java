@@ -1,5 +1,4 @@
-package app.AdminPages.Loans;
-
+package app.UserPages;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -12,7 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import app.Classes.SQLRequest;
-import app.Menus.AdminMenu;
+import app.Classes.User;
+import app.Menus.UserMenu;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,11 +22,11 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AddLoan implements ActionListener {
+public class LoanItem implements ActionListener {
     private static JFrame frame;
     private static JPanel  panel;
-    private static JLabel IDError, usernameError, dateError;
-    private static JTextField itemIDTextField, usernameTextField;
+    private static JLabel IDError, dateError;
+    private static JTextField itemIDTextField;
     private static JButton confirm, backButton;
     private static JFormattedTextField datePicker;
     private static DateTimeFormatter formatter;
@@ -59,7 +60,7 @@ public class AddLoan implements ActionListener {
 
         backButton = new JButton("←");
         backButton.setSize(20,20);
-        backButton.addActionListener(new AddLoan());
+        backButton.addActionListener(new LoanItem());
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Loan A tool");
@@ -112,33 +113,11 @@ public class AddLoan implements ActionListener {
         IDError.setVisible(false);
         subPanel.add(IDError, gbc);
 
-        JLabel username = new JLabel("Username:");
-        gbc.insets = new Insets(5,50,5,50);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        subPanel.add(username, gbc);
-
-        usernameTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 2.0;
-        subPanel.add(usernameTextField, gbc);
-
-        usernameError = new JLabel();
-        gbc.insets = new Insets(5,50,5,50);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        IDError.setVisible(false);
-        subPanel.add(usernameError, gbc);
-
-
+        
         JLabel date = new JLabel("Due Date:");
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         subPanel.add(date, gbc);
@@ -147,8 +126,9 @@ public class AddLoan implements ActionListener {
         datePicker = new JFormattedTextField(formatter);
         datePicker.setColumns(9);
         datePicker.setValue(LocalDate.now().plusDays(14));
+        datePicker.setEditable(false);
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 2.0;
         subPanel.add(datePicker, gbc);
@@ -156,15 +136,15 @@ public class AddLoan implements ActionListener {
         dateError = new JLabel();
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 3;
         dateError.setVisible(false);
         subPanel.add(dateError, gbc);
 
         
         confirm = new JButton("Add");
-        confirm.addActionListener(new AddLoan());
+        confirm.addActionListener(new LoanItem());
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;
         subPanel.add(confirm, gbc);
 
@@ -193,21 +173,14 @@ public class AddLoan implements ActionListener {
             }
             try {
 
-                String SQL = "SELECT ItemID, Status FROM Items";
+                String SQL = "SELECT ItemID FROM Items";
                 ResultSet result = SQLRequest.SQLQuery(SQL);
                 int output;
-                String statusOutput;
                 boolean itemIDFound = false;
                 while(result.next()){
                     output = result.getInt("ItemID");
                     if(itemID == output){
                         itemIDFound = true;
-                        statusOutput = result.getString("Status");
-                        if (!statusOutput.equals("idle")){
-                            IDError.setText("Item not available");
-                            IDError.setVisible(true);
-                            success = false;
-                        }
                     }
                 }
                 if (!itemIDFound){
@@ -219,33 +192,30 @@ public class AddLoan implements ActionListener {
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
             }
-            if(usernameTextField.getText().isEmpty()){
-                usernameError.setText("Please add a username");
-                usernameError.setVisible(true);
-                success = false;
-            }
-            String username = usernameTextField.getText();
+
             try {
 
-                String SQL = "SELECT Username FROM Users";
+                String SQL = "SELECT ItemID FROM Loans";
                 ResultSet result = SQLRequest.SQLQuery(SQL);
-                String output;
-                boolean usernameFound = false;
+                int output;
+                boolean itemIDFound = false;
                 while(result.next()){
-                    output = result.getString("Username");
-                    if(username.equals(output)){
-                        usernameFound = true;
+                    output = result.getInt("ItemID");
+                    if(itemID == output){
+                        itemIDFound = true;
                     }
                 }
-                if (!usernameFound){
-                    usernameError.setText("User not found");
-                    usernameError.setVisible(true);
+                if (itemIDFound){
+                    IDError.setText("Item not avaliable");
+                    IDError.setVisible(true);
                     success = false;
                 }
 
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
             }
+
+            String username = User.username;
             
             LocalDate dueDate = LocalDate.parse(datePicker.getText(), formatter);
 
@@ -259,13 +229,12 @@ public class AddLoan implements ActionListener {
             if(success){
                 String SQL = "INSERT INTO Loans (`ItemID`, `Username`, `DateBorrowed`, `DueDate`, Status) VALUES (\"" + itemID + "\", \""+ username + "\", \"" + today + "\", \"" + dueDate + "\" , \"OnLoan\")";
                 SQLRequest.SQLUpdate(SQL);
-                SQL = "UPDATE Items SET Status = \"On Loan\" WHERE ItemID = " + itemID ;
                 itemIDTextField.setText("");
                 JOptionPane.showMessageDialog(frame, "Item successfully loaned. Enjoy!");
         
             }
         }else if(e.getSource().equals(backButton)){
-            AdminMenu.main(null);
+            UserMenu.main(null);
         }
     }
 }

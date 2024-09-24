@@ -120,12 +120,18 @@ public class AdminMenu implements ActionListener {
 
     }else if(e.getSource().equals(loanItemA)){
         AddLoan.main(null);
+        frame.setVisible(false);
+        frame.dispose();
         
     }else if(e.getSource().equals(search)){
         SearchQuery.main(null);
+        frame.setVisible(false);
+        frame.dispose();
 
     }else if(e.getSource().equals(editItems)){
         EditToolsMenu.main(null);
+        frame.setVisible(false);
+        frame.dispose();
     }
     
     }
