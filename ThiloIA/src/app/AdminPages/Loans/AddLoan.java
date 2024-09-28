@@ -2,6 +2,7 @@ package app.AdminPages.Loans;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -20,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class AddLoan implements ActionListener {
     private static JFrame frame;
@@ -144,9 +147,11 @@ public class AddLoan implements ActionListener {
         subPanel.add(date, gbc);
 
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        datePicker = new JFormattedTextField(formatter);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        datePicker = new JFormattedTextField(dateFormat);
         datePicker.setColumns(9);
-        datePicker.setValue(LocalDate.now().plusDays(14));
+        ZoneId localZoneId = ZoneId.systemDefault();
+        datePicker.setValue(Date.from(LocalDate.now().plusDays(14).atStartOfDay(localZoneId).toInstant()));
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -260,12 +265,15 @@ public class AddLoan implements ActionListener {
                 String SQL = "INSERT INTO Loans (`ItemID`, `Username`, `DateBorrowed`, `DueDate`, Status) VALUES (\"" + itemID + "\", \""+ username + "\", \"" + today + "\", \"" + dueDate + "\" , \"OnLoan\")";
                 SQLRequest.SQLUpdate(SQL);
                 SQL = "UPDATE Items SET Status = \"On Loan\" WHERE ItemID = " + itemID ;
+                SQLRequest.SQLUpdate(SQL);
                 itemIDTextField.setText("");
                 JOptionPane.showMessageDialog(frame, "Item successfully loaned. Enjoy!");
         
             }
         }else if(e.getSource().equals(backButton)){
             AdminMenu.main(null);
+            frame.setVisible(false);
+            frame.dispose();
         }
     }
 }

@@ -229,6 +229,8 @@ public class LoanItem implements ActionListener {
             if(success){
                 String SQL = "INSERT INTO Loans (`ItemID`, `Username`, `DateBorrowed`, `DueDate`, Status) VALUES (\"" + itemID + "\", \""+ username + "\", \"" + today + "\", \"" + dueDate + "\" , \"OnLoan\")";
                 SQLRequest.SQLUpdate(SQL);
+                SQL = "UPDATE Items SET Status = \"On Loan\" WHERE ItemID = " + itemID ;
+                SQLRequest.SQLUpdate(SQL);
                 itemIDTextField.setText("");
                 JOptionPane.showMessageDialog(frame, "Item successfully loaned. Enjoy!");
         

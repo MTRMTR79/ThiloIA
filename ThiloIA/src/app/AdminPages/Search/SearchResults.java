@@ -10,7 +10,9 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import app.AdminPages.Search.Details.LoanDetails;
 import app.AdminPages.Search.Details.UserDetails;
+import app.Classes.Loan;
 import app.Classes.SQLRequest;
 import app.Classes.User;
 
@@ -101,20 +103,24 @@ public class SearchResults implements ActionListener {
             }
 
         }else if(queryType.equals("Item Name")){
-            model = new DefaultTableModel(new Object[]{"ItemID", "ItemName", "Status" , "LoanUsername"},0);
+            model = new DefaultTableModel(new Object[]{"Item ID", "Item Name", "Item Group", "Item Type", "Status" , "Loan Username"},0);
             String SQL = "SELECT * FROM Items WHERE ItemName LIKE  \"%" + query + "%\";";
-            String ItemID;
+            int ItemID;
             String ItemName;
             String Status;
+            String ItemType;
+            String ItemGroup;
             String LoanUsername;
             ResultSet result = SQLRequest.SQLQuery(SQL);
             try {
                 while(result.next()){
-                    ItemID = result.getString("ItemID");
+                    ItemID = result.getInt("ItemID");
                     ItemName = result.getString("ItemName");
+                    ItemGroup = result.getString("Group");
+                    ItemType = result.getString("Type");
                     Status = result.getString("Status");
                     LoanUsername = result.getString("loanUsername");
-                    model.addRow(new Object[] {ItemID, ItemName, Status, LoanUsername});
+                    model.addRow(new Object[] {ItemID, ItemName, ItemGroup, ItemType, Status, LoanUsername});
 
                 }
             } catch (SQLException ex){
@@ -170,6 +176,16 @@ public class SearchResults implements ActionListener {
                         String username = resultsTable.getModel().getValueAt(row, 0).toString();
                         User user = new User(username);
                         UserDetails.main(null, user, query, queryType);
+                        frame.setVisible(false);
+                        frame.dispose();
+
+                    }
+                    if (queryType.equals("Loans")){
+                        int ItemID = Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
+                        Loan loan = new Loan(ItemID);
+                        LoanDetails.main(args, loan, query, queryType);
+                        frame.setVisible(false);
+                        frame.dispose();
 
                     }
                 }

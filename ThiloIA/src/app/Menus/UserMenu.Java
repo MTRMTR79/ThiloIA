@@ -87,9 +87,13 @@ public class UserMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(loanCheck)){
         CheckLoans.main(null);
+        frame.setVisible(false);
+        frame.dispose();
 
     } else if(e.getSource().equals(loanItem)){
         LoanItem.main(null);
+        frame.setVisible(false);
+        frame.dispose();
     }
     
     }

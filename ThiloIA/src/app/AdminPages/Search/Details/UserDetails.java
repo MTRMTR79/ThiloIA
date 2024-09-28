@@ -6,8 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import app.AdminPages.Loans.AddLoan;
 import app.AdminPages.Search.SearchResults;
 import app.Classes.User;
 import java.awt.GridBagConstraints;
@@ -53,10 +51,10 @@ public class UserDetails implements ActionListener {
 
         backButton = new JButton("←");
         backButton.setSize(20,20);
-        backButton.addActionListener(new AddLoan());
+        backButton.addActionListener(new UserDetails());
         buttonPanel.add(backButton);
 
-        JLabel header = new JLabel("Loan A tool");
+        JLabel header = new JLabel(user.getUsername());
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;

@@ -56,7 +56,6 @@ public class Login implements ActionListener {
                 if(!plaintextPassword.equals(output)){
                     return -1;
                 }
-            
             }
 
 
@@ -163,7 +162,10 @@ public class Login implements ActionListener {
             char[] password = passwordField.getPassword();
             int status = credentialCheck(username, password);
             if (status == 2){
+                User.storeUser(username);
                 AdminMenu.main(null);
+                frame.setVisible(false);
+                frame.dispose();
             }else if(status == 1){
                 User.storeUser(username);
                 UserMenu.main(null);

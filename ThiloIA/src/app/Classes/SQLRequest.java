@@ -22,6 +22,7 @@ public class SQLRequest {
         
         catch (SQLException ex){
             System.out.println("SQL Request page BROKEN " + ex.getMessage());
+            //TODO - Make server down popup
         }
         return result;
     }
