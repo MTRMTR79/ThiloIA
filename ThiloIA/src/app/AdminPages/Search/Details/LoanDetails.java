@@ -2,28 +2,39 @@ package app.AdminPages.Search.Details;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import app.AdminPages.Search.SearchResults;
 import app.Classes.Loan;
+import app.Classes.SQLRequest;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class LoanDetails implements ActionListener {
     private static JFrame frame;
     private static JPanel  panel;
-    private static JTextField ItemID, ItemName, Username, DateBorrowed, DueDate, DateReturned;
+    private static JTextField ItemID, ItemName, Username;
+    private static JFormattedTextField DateBorrowed, DueDate, DateReturned;
     private static JComboBox<String> Status;
     private static JButton backButton, editButton, deleteButton, confirmButton, cancelButton;
     private static String query, queryType;
     private static Loan loan;
+    private static ZoneId localZoneId;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static void main(String[] args, Loan newLoan, String nQuery, String nQueryType) {
         query = nQuery;
         queryType = nQueryType;
@@ -95,8 +106,7 @@ public class LoanDetails implements ActionListener {
         gbc.weightx = 1.0;
         subPanel.add(ItemIDLabel, gbc);
 
-        ItemID = new JTextField(loan.getItemID());
-        //TODO - ItemID not showing
+        ItemID = new JTextField(String.valueOf(loan.getItemID()));
         ItemID.setEditable(false);
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -138,8 +148,14 @@ public class LoanDetails implements ActionListener {
         gbc.weightx = 1.0;
         subPanel.add(DateBorrowedLabel, gbc);
 
-        DateBorrowed = new JTextField(loan.getDateBorrowed().toString());
+        localZoneId = ZoneId.systemDefault();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        
+        DateBorrowed = new JFormattedTextField(dateFormat);
+        DateBorrowed.setColumns(9);
         DateBorrowed.setEditable(false);
+        DateBorrowed.setValue(Date.from(loan.getDateBorrowed().atStartOfDay(localZoneId).toInstant()));
         gbc.gridx = 1;
         gbc.gridy = 3;
         subPanel.add(DateBorrowed,gbc);
@@ -152,8 +168,10 @@ public class LoanDetails implements ActionListener {
         gbc.weightx = 1.0;
         subPanel.add(DueDateLabel, gbc);
 
-        DueDate = new JTextField(loan.getDueDate().toString());
+        DueDate = new JFormattedTextField(dateFormat);
+        DueDate.setColumns(9);
         DueDate.setEditable(false);
+        DueDate.setValue(Date.from(loan.getDueDate().atStartOfDay(localZoneId).toInstant()));
         gbc.gridx = 1;
         gbc.gridy = 4;
         subPanel.add(DueDate,gbc);
@@ -166,11 +184,15 @@ public class LoanDetails implements ActionListener {
         gbc.weightx = 1.0;
         subPanel.add(DateReturnedLabel, gbc);
 
+        DateReturned = new JFormattedTextField(dateFormat);
+        DateReturned.setColumns(9);
+        DateReturned.setEditable(false);
+        
         try {
-            DateBorrowed = new JTextField(loan.getDateReturned().toString());
+            DateReturned.setValue(Date.from(loan.getDateReturned().atStartOfDay(localZoneId).toInstant()));
         
         } catch (Exception e) {
-            DateReturned = new JTextField();
+            DateReturned.setValue(null);
         }
         
         DateReturned.setEditable(false);
@@ -235,11 +257,11 @@ public class LoanDetails implements ActionListener {
         Username.setEditable(true);
         DueDate.setEditable(true);
         Status.removeAllItems();
-        String[] statusOptions = {"Reserved", "On Loan" , "Overdue", "Returned"};
+        DateReturned.setEditable(true);
+        String[] statusOptions = {"On Loan" , "Overdue", "Returned"};
         for (int i=0; i< statusOptions.length; i++){
             Status.addItem(statusOptions[i]);
         }
-        //Status.setEditable(true);
         editButton.setVisible(false);
         deleteButton.setVisible(false);
         cancelButton.setVisible(true);
@@ -248,6 +270,7 @@ public class LoanDetails implements ActionListener {
     }else if (e.getSource().equals(cancelButton)){
         Username.setEditable(false);
         DueDate.setEditable(false);
+        DateReturned.setEditable(false);
         Status.removeAllItems();
         Status.addItem(loan.getStatus());
         editButton.setVisible(true);
@@ -256,9 +279,54 @@ public class LoanDetails implements ActionListener {
         confirmButton.setVisible(false);
         Username.setText(loan.getUsername());
         DueDate.setText(loan.getDateBorrowed().toString());
+        try {
+            DateReturned.setValue(Date.from(loan.getDateReturned().atStartOfDay(localZoneId).toInstant()));
+        
+        } catch (Exception ex) {
+            DateReturned.setValue(null);
+        }
 
     }else if (e.getSource().equals(confirmButton)){
-        loan.setDateReturned(LocalDate.parse(DateReturned.getText()));
+        
+        if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
+            JOptionPane.showMessageDialog(frame, "Error: Due date is before date borrowed");
+
+        } else if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
+            JOptionPane.showMessageDialog(frame, "Error: Date returned is before date borrowed");
+
+        }else{
+            String SQL;
+            loan.setDueDate(LocalDate.parse(DueDate.getText(), formatter));
+            System.out.println(loan.getDueDate().toString());
+            loan.setUsername(Username.getText());
+            loan.setStatus(Status.getSelectedItem().toString().replaceAll("\\s", ""));
+            System.out.println(loan.getStatus());
+            if (!DateReturned.getText().equals("")){
+                loan.setDateReturned(LocalDate.parse(DateReturned.getText(), formatter));
+                SQL = "UPDATE Loans SET Username = \"" + loan.getUsername() + "\",  DueDate = \"" + loan.getDueDate()+ "\", DateReturned = \"" + loan.getDateReturned() + "\", Status = \"" + loan.getStatus() + "\" WHERE ItemID = " + loan.getItemID();
+            }else{
+                
+                SQL = "UPDATE Loans SET Username = \"" + loan.getUsername() + "\",  DueDate = \"" + loan.getDueDate()+ "\", Status = \"" + loan.getStatus() + "\" WHERE ItemID = " + loan.getItemID();
+            }
+
+            try {
+                System.out.println(SQL);
+                SQLRequest.SQLUpdate(SQL);
+            } catch (Exception ex) {
+                System.out.println("SQL BROKEN " + ex.getMessage());
+            }
+
+            Username.setEditable(false);
+            DueDate.setEditable(false);
+            DateReturned.setEditable(false);
+            Status.removeAllItems();
+            Status.addItem(loan.getStatus());
+            editButton.setVisible(true);
+            deleteButton.setVisible(true);
+            cancelButton.setVisible(false);
+            confirmButton.setVisible(false);
+        }
+        
     }
 }
 }//TODO - Validate things

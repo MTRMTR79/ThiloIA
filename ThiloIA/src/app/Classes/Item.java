@@ -39,5 +39,4 @@ public class Item {
     }public String getStatus() {
         return Status;
     }
-
 }
