@@ -17,6 +17,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -287,20 +289,35 @@ public class LoanDetails implements ActionListener {
         }
 
     }else if (e.getSource().equals(confirmButton)){
-        
+        ResultSet result;
+        String UsernameSQL = "SELECT Username FROM Users";
+        String output;
+        Boolean found = false;
+        result = SQLRequest.SQLQuery(UsernameSQL);
+        try {
+            while(result.next()){
+                output = result.getString("Username");
+                if(Username.getText().equals(output)){
+                    found = true;
+                    break;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL BROKEN " + ex.getMessage());
+        }
         if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
             JOptionPane.showMessageDialog(frame, "Error: Due date is before date borrowed");
 
-        } else if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
+        } else if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DateReturned.getText(),formatter))){
             JOptionPane.showMessageDialog(frame, "Error: Date returned is before date borrowed");
 
+        }else if (!found){
+            JOptionPane.showMessageDialog(frame, "Error: User not found");
         }else{
             String SQL;
             loan.setDueDate(LocalDate.parse(DueDate.getText(), formatter));
-            System.out.println(loan.getDueDate().toString());
             loan.setUsername(Username.getText());
             loan.setStatus(Status.getSelectedItem().toString().replaceAll("\\s", ""));
-            System.out.println(loan.getStatus());
             if (!DateReturned.getText().equals("")){
                 loan.setDateReturned(LocalDate.parse(DateReturned.getText(), formatter));
                 SQL = "UPDATE Loans SET Username = \"" + loan.getUsername() + "\",  DueDate = \"" + loan.getDueDate()+ "\", DateReturned = \"" + loan.getDateReturned() + "\", Status = \"" + loan.getStatus() + "\" WHERE ItemID = " + loan.getItemID();
@@ -310,7 +327,6 @@ public class LoanDetails implements ActionListener {
             }
 
             try {
-                System.out.println(SQL);
                 SQLRequest.SQLUpdate(SQL);
             } catch (Exception ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
@@ -327,6 +343,13 @@ public class LoanDetails implements ActionListener {
             confirmButton.setVisible(false);
         }
         
+    }else if (e.getSource().equals(deleteButton)){
+        Object[] options = {"Cancel", "Delete"};
+        int result = JOptionPane.showOptionDialog(null, "Are you sure you want to delete this loan?", "Are you sure you want to delete this loan?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (result == JOptionPane.NO_OPTION){
+            String SQL = "DELETE FROM Loans WHERE ItemID = " + loan.getItemID();
+            SQLRequest.SQLUpdate(SQL);
+        }
     }
 }
 }//TODO - Validate things
