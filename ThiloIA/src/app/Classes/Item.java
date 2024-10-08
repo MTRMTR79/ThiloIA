@@ -38,5 +38,17 @@ public class Item {
         return LoanUsername;
     }public String getStatus() {
         return Status;
+    }public void setItemID(int itemID) {
+        ItemID = itemID;
+    }public void setItemGroup(String itemGroup) {
+        ItemGroup = itemGroup;
+    }public void setItemName(String itemName) {
+        ItemName = itemName;
+    }public void setItemType(String itemType) {
+        ItemType = itemType;
+    }public void setLoanUsername(String loanUsername) {
+        LoanUsername = loanUsername;
+    }public void setStatus(String status) {
+        Status = status;
     }
 }

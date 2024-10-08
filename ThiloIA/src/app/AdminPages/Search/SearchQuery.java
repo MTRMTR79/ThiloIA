@@ -90,7 +90,7 @@ public class SearchQuery implements ActionListener {
         gbc.weightx = 2;
         subPanel.add(searchQuery, gbc);
 
-        String[] searchtypes = new String[]{"Item Name", "Username", "Loans"};
+        String[] searchtypes = new String[]{"Item Name", "Username", "Loans"}; //TODO - add type, group, and ItemID
         searchType = new JComboBox<String>(searchtypes);
         gbc.gridx = 1;
         gbc.gridy = 1;

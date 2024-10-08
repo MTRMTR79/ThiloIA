@@ -262,9 +262,9 @@ public class AddLoan implements ActionListener {
                 success = false;
             }
             if(success){
-                String SQL = "INSERT INTO Loans (`ItemID`, `Username`, `DateBorrowed`, `DueDate`, Status) VALUES (\"" + itemID + "\", \""+ username + "\", \"" + today + "\", \"" + dueDate + "\" , \"OnLoan\")";
+                String SQL = "INSERT INTO Loans (`ItemID`, `Username`, `DateBorrowed`, `DueDate`, Status) VALUES (\"" + itemID + "\", \""+ username + "\", \"" + today + "\", \"" + dueDate + "\" , \"On Loan\")";
                 SQLRequest.SQLUpdate(SQL);
-                SQL = "UPDATE Items SET Status = \"On Loan\" WHERE ItemID = " + itemID ;
+                SQL = "UPDATE Items SET Status = \"On Loan\", LoanUsername = \"" + username + "\" WHERE ItemID = " + itemID ;
                 SQLRequest.SQLUpdate(SQL);
                 itemIDTextField.setText("");
                 JOptionPane.showMessageDialog(frame, "Item successfully loaned. Enjoy!");

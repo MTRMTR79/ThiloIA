@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import app.Classes.SQLRequest;
+import app.Menus.AdminMenu;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -199,7 +201,7 @@ public class AddTool implements ActionListener {
         
             }
         }else if(e.getSource().equals(backButton)){
-            EditToolsMenu.main(null);
+            AdminMenu.main(null);
         }else if(e.getSource().equals(itemTypeComboBox)){
             itemGroupComboBox.removeAllItems();
             String SQL = "SELECT ItemGroup FROM ItemGroups WHERE ItemType = \"" + itemTypeComboBox.getSelectedItem() + "\"";

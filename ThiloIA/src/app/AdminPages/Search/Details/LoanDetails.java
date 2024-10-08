@@ -317,7 +317,7 @@ public class LoanDetails implements ActionListener {
             String SQL;
             loan.setDueDate(LocalDate.parse(DueDate.getText(), formatter));
             loan.setUsername(Username.getText());
-            loan.setStatus(Status.getSelectedItem().toString().replaceAll("\\s", ""));
+            loan.setStatus(Status.getSelectedItem().toString());
             if (!DateReturned.getText().equals("")){
                 loan.setDateReturned(LocalDate.parse(DateReturned.getText(), formatter));
                 SQL = "UPDATE Loans SET Username = \"" + loan.getUsername() + "\",  DueDate = \"" + loan.getDueDate()+ "\", DateReturned = \"" + loan.getDateReturned() + "\", Status = \"" + loan.getStatus() + "\" WHERE ItemID = " + loan.getItemID();
@@ -352,4 +352,4 @@ public class LoanDetails implements ActionListener {
         }
     }
 }
-}//TODO - Validate things
+}

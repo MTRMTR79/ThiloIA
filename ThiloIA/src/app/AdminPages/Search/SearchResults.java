@@ -10,8 +10,10 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import app.AdminPages.Search.Details.ItemDetails;
 import app.AdminPages.Search.Details.LoanDetails;
 import app.AdminPages.Search.Details.UserDetails;
+import app.Classes.Item;
 import app.Classes.Loan;
 import app.Classes.SQLRequest;
 import app.Classes.User;
@@ -179,11 +181,17 @@ public class SearchResults implements ActionListener {
                         frame.setVisible(false);
                         frame.dispose();
 
-                    }
-                    if (queryType.equals("Loans")){
+                    }else if (queryType.equals("Loans")){
                         int ItemID = Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
                         Loan loan = new Loan(ItemID);
                         LoanDetails.main(args, loan, query, queryType);
+                        frame.setVisible(false);
+                        frame.dispose();
+
+                    } else if (queryType.equals("Item Name")){
+                        int ItemID = Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
+                        Item item = new Item(ItemID);
+                        ItemDetails.main(args, item, query, queryType);
                         frame.setVisible(false);
                         frame.dispose();
 

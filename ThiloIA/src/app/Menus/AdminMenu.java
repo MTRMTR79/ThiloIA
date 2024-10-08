@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import app.AdminPages.EditTools.EditToolsMenu;
+import app.AdminPages.EditTools.AddTool;
 import app.AdminPages.Loans.AddLoan;
 import app.AdminPages.Search.SearchQuery;
 import java.awt.GridBagConstraints;
@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 public class AdminMenu implements ActionListener {
     private static JFrame frame;
     private static JPanel  panel;
-    private static JButton search, editItems, confirmReturn, editLoan, loanItemA;
+    private static JButton search, addItem, confirmReturn, editLoan, loanItemA;
     public static void main(String[] args) {
         
 
@@ -68,8 +68,8 @@ public class AdminMenu implements ActionListener {
         gbc.insets = new Insets(20, 20, 20, 20);
         subPanel.add(search, gbc);
 
-        editItems = new JButton("Edit Item Collection");
-        editItems.addActionListener(new AdminMenu());
+        addItem = new JButton("Add Item");
+        addItem.addActionListener(new AdminMenu());
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -77,7 +77,7 @@ public class AdminMenu implements ActionListener {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(15, 15, 15, 15);
-        subPanel.add(editItems, gbc);
+        subPanel.add(addItem, gbc);
 
         confirmReturn = new JButton("Confirm returns");
         confirmReturn.addActionListener(new AdminMenu());
@@ -128,8 +128,8 @@ public class AdminMenu implements ActionListener {
         frame.setVisible(false);
         frame.dispose();
 
-    }else if(e.getSource().equals(editItems)){
-        EditToolsMenu.main(null);
+    }else if(e.getSource().equals(addItem)){
+        AddTool.main(null);
         frame.setVisible(false);
         frame.dispose();
     }
