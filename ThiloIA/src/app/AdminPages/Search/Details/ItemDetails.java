@@ -252,6 +252,7 @@ public class ItemDetails implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
         }
         while (!(itemTypeQueue.peek() == null)) {
             itemType.addItem(itemTypeQueue.remove());
@@ -297,6 +298,7 @@ public class ItemDetails implements ActionListener {
                 }
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
             if (!found){
                 JOptionPane.showMessageDialog(frame, "Error: User not found");
@@ -389,6 +391,7 @@ public class ItemDetails implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
         }
 
         int Length = itemGroupQueue.size();

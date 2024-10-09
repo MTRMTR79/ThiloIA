@@ -304,6 +304,7 @@ public class LoanDetails implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
         }
         if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
             JOptionPane.showMessageDialog(frame, "Error: Due date is before date borrowed");

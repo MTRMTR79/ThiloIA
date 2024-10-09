@@ -3,6 +3,7 @@ package app.UserPages;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,8 +17,11 @@ import app.Menus.UserMenu;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -27,6 +31,43 @@ public class CheckLoans implements ActionListener {
     private static JPanel  panel;
     private static JTable resultsTable;
     private static JButton confirm, backButton;
+    private static DefaultTableModel model;
+
+    private static void fillTable(){
+        while (model.getRowCount() > 0){
+        model.removeRow(model.getRowCount() - 1);
+        }
+        String SQL = "SELECT Loans.*, Items.ItemName FROM Loans LEFT JOIN Items ON Loans.ItemID = Items.ItemID WHERE Username = \"" + User.username + "\"";
+        String ItemID;
+        String ItemName;
+        String Username;
+        LocalDate DateBorrowed;
+        LocalDate DueDate;
+        LocalDate DateReturned;
+        String Status;
+        ResultSet result = SQLRequest.SQLQuery(SQL);
+        try {
+            while(result.next()){
+                ItemID = result.getString("ItemID");
+                ItemName = result.getString("ItemName");
+                Username = result.getString("Username");
+                DateBorrowed = result.getDate("DateBorrowed").toLocalDate();
+                DueDate = result.getDate("DueDate").toLocalDate();
+                Status = result.getString("Status");
+                if (result.getDate("DateReturned") != null){
+                    DateReturned = result.getDate("DateReturned").toLocalDate();
+                    model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, DateReturned, Status, "Click to Return" });
+                }else{
+                model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, null, Status, "Click to Return" });
+                }
+            
+            }
+
+        } catch (SQLException ex){
+            System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+        }
+    }
     public static void main(String[] args) {
 
         // Declare and initalise login frame
@@ -77,43 +118,32 @@ public class CheckLoans implements ActionListener {
         gbc.weighty = 1;
         panel.add(paddingPanel, gbc);
 
-        DefaultTableModel model;
+        
 
-        model = new DefaultTableModel(new Object[]{"Item ID","Item Name", "Username", "Date Borrowed" , "Due Date", "Date Returned", "Status"},0);
-        String SQL = "SELECT Loans.*, Items.ItemName FROM Loans LEFT JOIN Items ON Loans.ItemID = Items.ItemID WHERE Username = \"" + User.username + "\"";
-        String ItemID;
-        String ItemName;
-        String Username;
-        LocalDate DateBorrowed;
-        LocalDate DueDate;
-        LocalDate DateReturned;
-        String Status;
-        ResultSet result = SQLRequest.SQLQuery(SQL);
-        try {
-            while(result.next()){
-                ItemID = result.getString("ItemID");
-                ItemName = result.getString("ItemName");
-                Username = result.getString("Username");
-                DateBorrowed = result.getDate("DateBorrowed").toLocalDate();
-                DueDate = result.getDate("DueDate").toLocalDate();
-                Status = result.getString("Status");
-                if (result.getDate("DateReturned") != null){
-                    DateReturned = result.getDate("DateReturned").toLocalDate();
-                    model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, DateReturned, Status });
-                }else{
-                model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, null, Status });
-                }
-
-            }
-        } catch (SQLException ex){
-            System.out.println("SQL BROKEN " + ex.getMessage());
-        }
-
+        model = new DefaultTableModel(new Object[]{"Item ID","Item Name", "Username", "Date Borrowed" , "Due Date", "Date Returned", "Status", "Return Item"},0);
+        fillTable();
         
         
         resultsTable = new JTable(model);
         resultsTable.setDefaultEditor(Object.class, null);;
         resultsTable.setFillsViewportHeight(true);
+        resultsTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent returnClick) {
+                Point point = returnClick.getPoint();
+                int row = resultsTable.rowAtPoint(point);
+                if (returnClick.getClickCount() == 1 && resultsTable.getSelectedRow() != -1 && resultsTable.getSelectedColumn() == 7){
+                    int result = JOptionPane.showConfirmDialog(null, "Have you returned this Item?", "Have you returned this Item?", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION){
+                        LocalDate today = LocalDate.now();
+                        String SQL = "UPDATE Loans SET Status = \"Returned\", DateReturned = \"" + today + "\" WHERE ItemID =" + Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
+                        System.out.println(SQL);
+                        SQLRequest.SQLUpdate(SQL);
+                        resultsTable.clearSelection();
+                        fillTable();
+                    }
+                }
+            }
+        });
 
 
         JScrollPane scrollPane = new JScrollPane(resultsTable);

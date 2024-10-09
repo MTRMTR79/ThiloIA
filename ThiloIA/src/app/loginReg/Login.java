@@ -2,6 +2,7 @@ package app.loginReg;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -62,6 +63,7 @@ public class Login implements ActionListener {
         }
         catch (SQLException ex){
             System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
         }
         
 

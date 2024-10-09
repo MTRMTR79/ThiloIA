@@ -10,7 +10,7 @@ public class SQLRequest {
         try{
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost: 3306/IdeasHub", "root", "A5M%r5vWMxSx");
             Class.forName("com.mysql.jdbc.Driver");
-            sqlst = con.createStatement();
+            sqlst = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             result = sqlst.executeQuery(SQL);
         }
         catch (ClassNotFoundException ex){
@@ -18,7 +18,6 @@ public class SQLRequest {
         }
         catch (SQLException ex){
             System.out.println("SQL Request page BROKEN " + ex.getMessage());
-            //TODO - Make server down popup
         }
         return result;
     }

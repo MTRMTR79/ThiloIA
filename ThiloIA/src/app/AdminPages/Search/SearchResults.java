@@ -4,6 +4,7 @@ package app.AdminPages.Search;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -102,6 +103,7 @@ public class SearchResults implements ActionListener {
                 }
             } catch (SQLException ex){
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
 
         }else if(queryType.equals("Item Name")){
@@ -127,6 +129,7 @@ public class SearchResults implements ActionListener {
                 }
             } catch (SQLException ex){
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
 
         }else if(queryType.equals("Loans")){
@@ -158,6 +161,7 @@ public class SearchResults implements ActionListener {
                 }
             } catch (SQLException ex){
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
 
         }else {

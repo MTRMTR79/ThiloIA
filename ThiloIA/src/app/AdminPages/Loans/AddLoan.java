@@ -223,6 +223,7 @@ public class AddLoan implements ActionListener {
 
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
             if(usernameTextField.getText().isEmpty()){
                 usernameError.setText("Please add a username");
@@ -250,6 +251,7 @@ public class AddLoan implements ActionListener {
 
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
             
             LocalDate dueDate = LocalDate.parse(datePicker.getText(), formatter);

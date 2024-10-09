@@ -130,6 +130,7 @@ public class AddTool implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
         }
 
         int Length = itemTypeQueue.size();
@@ -215,6 +216,7 @@ public class AddTool implements ActionListener {
                 }
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
             }
 
             int Length = itemGroupQueue.size();

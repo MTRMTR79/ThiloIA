@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 import app.Classes.User;
 import app.UserPages.CheckLoans;
 import app.UserPages.LoanItem;
+import app.loginReg.Login;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,7 +20,7 @@ import java.awt.event.ActionListener;
 public class UserMenu implements ActionListener {
     private static JFrame frame;
     private static JPanel  panel;
-    private static JButton loanCheck, loanItem;
+    private static JButton loanCheck, loanItem, logoutButton;
     public static void main(String[] args) {
         
 
@@ -39,18 +40,41 @@ public class UserMenu implements ActionListener {
         gbc.insets = new Insets(10, 10, 10, 10);
         frame.add(panel);
 
-        JLabel header = new JLabel("Welcome to Ideas Hub Loans, "+ User.username );
+        JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.insets = new Insets(10, 0, 10, 10);
+        gbc.fill = GridBagConstraints.BOTH;
+        panel.add(buttonPanel, gbc);
+
+        logoutButton = new JButton("Logout");
+        logoutButton.setSize(20,20);
+        logoutButton.addActionListener(new UserMenu());
+        buttonPanel.add(logoutButton);
+
+        JLabel header = new JLabel("Menu");
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
         gbc.weighty = 0.5;
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
         header.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(header, gbc);
 
+        JPanel paddingPanel = new JPanel();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        panel.add(paddingPanel, gbc);
+
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
         gbc.weighty = 1;
@@ -90,6 +114,12 @@ public class UserMenu implements ActionListener {
         frame.setVisible(false);
         frame.dispose();
 
+    } else if (e.getSource().equals(logoutButton)){
+    User.setEmail(null);
+    User.setUsername(null);
+    Login.main(null);
+    frame.setVisible(false);
+    frame.dispose();
     } else if(e.getSource().equals(loanItem)){
         LoanItem.main(null);
         frame.setVisible(false);

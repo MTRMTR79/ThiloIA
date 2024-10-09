@@ -44,6 +44,7 @@ public class Register implements ActionListener{
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
         }      
 
     

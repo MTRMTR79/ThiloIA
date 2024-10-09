@@ -30,11 +30,13 @@
 //     }
 // }
 
+//TODO - Keep window sizes
+
 package app;
 
 import app.loginReg.Login;
 
- 
+//TODO - Fonts  --> Font  f1  = new Font(Font.SANS_SERIF, Font.PLAIN,  20);
 public class App {
     public static void main(String[] args) throws Exception {
        Login.main(null); 
