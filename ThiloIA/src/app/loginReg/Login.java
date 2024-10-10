@@ -1,6 +1,5 @@
 package app.loginReg;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -9,6 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.sql.*;
 
+import app.App;
 import app.Classes.SQLRequest;
 import app.Classes.User;
 import app.Menus.AdminMenu;
@@ -23,7 +23,6 @@ import java.awt.event.ActionListener;
 
 
 public class Login implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JButton registerButton, loginButton;
     private static JTextField usernameTextField;
@@ -63,7 +62,7 @@ public class Login implements ActionListener {
         }
         catch (SQLException ex){
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
         
 
@@ -75,21 +74,13 @@ public class Login implements ActionListener {
 
     public static void main(String[] args) {
 
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
         //Initialise GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setSize(900,500);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JLabel header = new JLabel("Welcome to IHIM");
         gbc.gridx = 0;
@@ -155,7 +146,7 @@ public class Login implements ActionListener {
 
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -165,23 +156,21 @@ public class Login implements ActionListener {
             int status = credentialCheck(username, password);
             if (status == 2){
                 User.storeUser(username);
+                App.frame.getContentPane().removeAll();
                 AdminMenu.main(null);
-                frame.setVisible(false);
-                frame.dispose();
             }else if(status == 1){
                 User.storeUser(username);
+                App.frame.getContentPane().removeAll();
                 UserMenu.main(null);
-                frame.setVisible(false);
-                frame.dispose();
             }else if(status == -1){
                 loginError.setVisible(true);
             }
 
         }else if(e.getSource().equals(registerButton)){
+            App.frame.getContentPane().removeAll();
             Register.main(null);
-            frame.setVisible(false);
-            frame.dispose();
-
+            
+            
         }
     
     }

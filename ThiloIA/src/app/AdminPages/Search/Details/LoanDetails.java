@@ -3,12 +3,13 @@ package app.AdminPages.Search.Details;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.App;
 import app.AdminPages.Search.SearchResults;
 import app.Classes.Loan;
 import app.Classes.SQLRequest;
@@ -27,7 +28,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class LoanDetails implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JTextField ItemID, ItemName, Username;
     private static JFormattedTextField DateBorrowed, DueDate, DateReturned;
@@ -42,13 +42,6 @@ public class LoanDetails implements ActionListener {
         queryType = nQueryType;
         loan = newLoan;
 
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
-
         GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -56,7 +49,7 @@ public class LoanDetails implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -246,15 +239,14 @@ public class LoanDetails implements ActionListener {
 
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
 
     }
     @Override
     public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(backButton)){
+        App.frame.getContentPane().removeAll();
         SearchResults.main(null, query, queryType);
-        frame.setVisible(false);
-        frame.dispose();
     }else if (e.getSource().equals(editButton)){
         Username.setEditable(true);
         DueDate.setEditable(true);
@@ -304,16 +296,16 @@ public class LoanDetails implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
         if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
-            JOptionPane.showMessageDialog(frame, "Error: Due date is before date borrowed");
+            JOptionPane.showMessageDialog(App.frame, "Error: Due date is before date borrowed");
 
         } else if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DateReturned.getText(),formatter))){
-            JOptionPane.showMessageDialog(frame, "Error: Date returned is before date borrowed");
+            JOptionPane.showMessageDialog(App.frame, "Error: Date returned is before date borrowed");
 
         }else if (!found){
-            JOptionPane.showMessageDialog(frame, "Error: User not found");
+            JOptionPane.showMessageDialog(App.frame, "Error: User not found");
         }else{
             String SQL;
             loan.setDueDate(LocalDate.parse(DueDate.getText(), formatter));

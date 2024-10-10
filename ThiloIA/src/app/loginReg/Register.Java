@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,6 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import app.App;
 import app.Classes.SQLRequest;
 
 
@@ -21,7 +21,6 @@ import app.Classes.SQLRequest;
 
 
 public class Register implements ActionListener{
-    private static JFrame frame;
     private static JPanel  panel;
     private static JButton registerButton, loginButton;
     private static JTextField usernameTextField, emailTextField;
@@ -44,7 +43,7 @@ public class Register implements ActionListener{
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }      
 
     
@@ -71,19 +70,13 @@ public class Register implements ActionListener{
 
     public static void main(String[] args) {
 
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
         //Initialise GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setSize(900,500);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JLabel title = new JLabel("Welcome to IHIM");
         gbc.gridx = 0;
@@ -188,15 +181,14 @@ public class Register implements ActionListener{
 
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(loginButton)){
+            App.frame.getContentPane().removeAll();;
             Login.main(null);
-            frame.setVisible(false);
-            frame.dispose();
 
         }else if(e.getSource().equals(registerButton)){
             String tempUsername = usernameTextField.getText();
@@ -246,10 +238,9 @@ public class Register implements ActionListener{
 
 
 
-                JOptionPane.showMessageDialog(frame, "Account successfully created");
+                JOptionPane.showMessageDialog(App.frame, "Account successfully created");
+                App.frame.getContentPane().removeAll();
                 Login.main(null);
-                frame.setVisible(false);
-                frame.dispose();
             }
             
         

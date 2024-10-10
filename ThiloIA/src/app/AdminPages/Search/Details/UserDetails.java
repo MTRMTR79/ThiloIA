@@ -1,11 +1,12 @@
 package app.AdminPages.Search.Details;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.App;
 import app.AdminPages.Search.SearchResults;
 import app.Classes.User;
 import java.awt.GridBagConstraints;
@@ -15,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserDetails implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JTextField username, email;
     private static JButton backButton;
@@ -24,13 +24,6 @@ public class UserDetails implements ActionListener {
         query = nQuery;
         queryType = nQueryType;
 
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
-
         GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -38,7 +31,7 @@ public class UserDetails implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -112,12 +105,13 @@ public class UserDetails implements ActionListener {
         
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
 
     }
     @Override
     public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(backButton)){
+        App.frame.getContentPane().removeAll();
         SearchResults.main(null, query, queryType);
     } 
     

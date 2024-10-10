@@ -30,15 +30,23 @@
 //     }
 // }
 
-//TODO - Keep window sizes
 
 package app;
+
+import javax.swing.JFrame;
 
 import app.loginReg.Login;
 
 //TODO - Fonts  --> Font  f1  = new Font(Font.SANS_SERIF, Font.PLAIN,  20);
 public class App {
+    public static JFrame frame;
+    
     public static void main(String[] args) throws Exception {
-       Login.main(null); 
+        frame = new JFrame(); 
+        frame.setSize(1000, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("IH Inventory Management");
+        frame.setLocationRelativeTo(null);
+        Login.main(null); 
     }
 }

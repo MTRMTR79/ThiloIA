@@ -2,11 +2,12 @@ package app.AdminPages.Search;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.App;
 import app.Menus.AdminMenu;
 
 import java.awt.GridBagConstraints;
@@ -16,21 +17,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SearchQuery implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JLabel emptyError;
     private static JTextField searchQuery;
     private static JButton confirm, backButton;
     private static JComboBox<String> searchType;
     public static void main(String[] args) {
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -39,7 +31,7 @@ public class SearchQuery implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -115,7 +107,7 @@ public class SearchQuery implements ActionListener {
 
         
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
     
     @Override
@@ -127,15 +119,14 @@ public class SearchQuery implements ActionListener {
             else{
                 String query = searchQuery.getText();
                 String queryType = searchType.getSelectedItem().toString();
-                
+                App.frame.getContentPane().removeAll();
                 SearchResults.main(null, query, queryType);
-                frame.setVisible(false);
-                frame.dispose();
+                
             }
         }else if(e.getSource().equals(backButton)){
+            App.frame.getContentPane().removeAll();
             AdminMenu.main(null);
-            frame.setVisible(false);
-            frame.dispose();
+           
         }
     }
 }

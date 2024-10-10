@@ -2,12 +2,13 @@ package app.AdminPages.Search.Details;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.App;
 import app.AdminPages.Search.SearchResults;
 import app.Classes.Item;
 import app.Classes.SQLRequest;
@@ -22,7 +23,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ItemDetails implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JTextField ItemID, itemName, Username;
     private static JComboBox<String> Status, itemGroup, itemType;
@@ -34,13 +34,6 @@ public class ItemDetails implements ActionListener {
         queryType = nQueryType;
         item = newItem;
 
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
-
         GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -48,7 +41,7 @@ public class ItemDetails implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -224,15 +217,14 @@ public class ItemDetails implements ActionListener {
 
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
 
     }
     @Override
     public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(backButton)){
+        App.frame.getContentPane().removeAll();
         SearchResults.main(null, query, queryType);
-        frame.setVisible(false);
-        frame.dispose();
     }else if (e.getSource().equals(editButton)){
         itemName.setEditable(true);
         Username.setEditable(true);
@@ -252,7 +244,7 @@ public class ItemDetails implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
         while (!(itemTypeQueue.peek() == null)) {
             itemType.addItem(itemTypeQueue.remove());
@@ -298,10 +290,10 @@ public class ItemDetails implements ActionListener {
                 }
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
             if (!found){
-                JOptionPane.showMessageDialog(frame, "Error: User not found");
+                JOptionPane.showMessageDialog(App.frame, "Error: User not found");
             }else{
                 String SQL;
                 item.setLoanUsername(Username.getText());
@@ -391,7 +383,7 @@ public class ItemDetails implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
 
         int Length = itemGroupQueue.size();

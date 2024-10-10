@@ -4,12 +4,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.App;
 import app.Classes.SQLRequest;
 import app.Menus.AdminMenu;
 
@@ -22,21 +23,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AddTool implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JLabel emptyError, itemGroup;
     private static JTextField itemNameTextField;
     private static JComboBox<String> itemTypeComboBox, itemGroupComboBox;
     private static JButton confirm, backButton;
     public static void main(String[] args) {
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -45,7 +37,7 @@ public class AddTool implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -130,7 +122,7 @@ public class AddTool implements ActionListener {
             }
         } catch (SQLException ex) {
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
 
         int Length = itemTypeQueue.size();
@@ -174,7 +166,7 @@ public class AddTool implements ActionListener {
         gbc.gridwidth = 1;
         subPanel.add(confirm, gbc);
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
     
     @Override
@@ -198,10 +190,11 @@ public class AddTool implements ActionListener {
                 System.out.println(SQL);
                 SQLRequest.SQLUpdate(SQL);
                 itemNameTextField.setText("");
-                JOptionPane.showMessageDialog(frame, "Item successfully added");
+                JOptionPane.showMessageDialog(App.frame, "Item successfully added");
         
             }
         }else if(e.getSource().equals(backButton)){
+            App.frame.getContentPane().removeAll();
             AdminMenu.main(null);
         }else if(e.getSource().equals(itemTypeComboBox)){
             itemGroupComboBox.removeAllItems();
@@ -216,7 +209,7 @@ public class AddTool implements ActionListener {
                 }
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
 
             int Length = itemGroupQueue.size();

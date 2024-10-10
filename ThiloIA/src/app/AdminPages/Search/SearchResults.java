@@ -2,7 +2,6 @@ package app.AdminPages.Search;
 
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -11,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import app.App;
 import app.AdminPages.Search.Details.ItemDetails;
 import app.AdminPages.Search.Details.LoanDetails;
 import app.AdminPages.Search.Details.UserDetails;
@@ -32,18 +32,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class SearchResults implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JTable resultsTable;
     private static JButton confirm, backButton;
     public static void main(String[] args, String query, String queryType) {
 
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
 
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -53,7 +46,7 @@ public class SearchResults implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -103,7 +96,7 @@ public class SearchResults implements ActionListener {
                 }
             } catch (SQLException ex){
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
 
         }else if(queryType.equals("Item Name")){
@@ -129,7 +122,7 @@ public class SearchResults implements ActionListener {
                 }
             } catch (SQLException ex){
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
 
         }else if(queryType.equals("Loans")){
@@ -161,7 +154,7 @@ public class SearchResults implements ActionListener {
                 }
             } catch (SQLException ex){
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
 
         }else {
@@ -181,23 +174,20 @@ public class SearchResults implements ActionListener {
                     if (queryType.equals("Username")){
                         String username = resultsTable.getModel().getValueAt(row, 0).toString();
                         User user = new User(username);
+                        App.frame.getContentPane().removeAll();
                         UserDetails.main(null, user, query, queryType);
-                        frame.setVisible(false);
-                        frame.dispose();
 
                     }else if (queryType.equals("Loans")){
                         int ItemID = Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
                         Loan loan = new Loan(ItemID);
+                        App.frame.getContentPane().removeAll();
                         LoanDetails.main(args, loan, query, queryType);
-                        frame.setVisible(false);
-                        frame.dispose();
 
                     } else if (queryType.equals("Item Name")){
                         int ItemID = Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
                         Item item = new Item(ItemID);
+                        App.frame.getContentPane().removeAll();
                         ItemDetails.main(args, item, query, queryType);
-                        frame.setVisible(false);
-                        frame.dispose();
 
                     }
                 }
@@ -218,7 +208,7 @@ public class SearchResults implements ActionListener {
 
         
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
     
     @Override
@@ -226,9 +216,8 @@ public class SearchResults implements ActionListener {
         if (e.getSource().equals(confirm)){
             
         }else if(e.getSource().equals(backButton)){
+            App.frame.getContentPane().removeAll();
             SearchQuery.main(null);
-            frame.setVisible(false);
-            frame.dispose();
         }
     }
 }

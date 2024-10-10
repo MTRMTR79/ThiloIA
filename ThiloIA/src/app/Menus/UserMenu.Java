@@ -1,10 +1,10 @@
 package app.Menus;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import app.App;
 import app.Classes.User;
 import app.UserPages.CheckLoans;
 import app.UserPages.LoanItem;
@@ -18,18 +18,10 @@ import java.awt.event.ActionListener;
 
 
 public class UserMenu implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JButton loanCheck, loanItem, logoutButton;
     public static void main(String[] args) {
         
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -38,7 +30,7 @@ public class UserMenu implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -104,26 +96,23 @@ public class UserMenu implements ActionListener {
         
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
 
     }
     @Override
     public void actionPerformed(ActionEvent e) {
     if (e.getSource().equals(loanCheck)){
+        App.frame.getContentPane().removeAll();
         CheckLoans.main(null);
-        frame.setVisible(false);
-        frame.dispose();
 
     } else if (e.getSource().equals(logoutButton)){
-    User.setEmail(null);
-    User.setUsername(null);
-    Login.main(null);
-    frame.setVisible(false);
-    frame.dispose();
+        User.setEmail(null);
+        User.setUsername(null);
+        App.frame.getContentPane().removeAll();
+        Login.main(null);
     } else if(e.getSource().equals(loanItem)){
+        App.frame.getContentPane().removeAll();
         LoanItem.main(null);
-        frame.setVisible(false);
-        frame.dispose();
     }
     
     }

@@ -1,7 +1,6 @@
 package app.UserPages;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -10,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import app.App;
 import app.Classes.SQLRequest;
 import app.Classes.User;
 import app.Menus.UserMenu;
@@ -27,7 +27,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class CheckLoans implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JTable resultsTable;
     private static JButton confirm, backButton;
@@ -65,17 +64,10 @@ public class CheckLoans implements ActionListener {
 
         } catch (SQLException ex){
             System.out.println("SQL BROKEN " + ex.getMessage());
-            JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
     }
     public static void main(String[] args) {
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
 
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -85,7 +77,7 @@ public class CheckLoans implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -160,7 +152,7 @@ public class CheckLoans implements ActionListener {
 
         
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
     
     @Override
@@ -168,6 +160,7 @@ public class CheckLoans implements ActionListener {
         if (e.getSource().equals(confirm)){
             
         }else if(e.getSource().equals(backButton)){
+            App.frame.getContentPane().removeAll();
             UserMenu.main(null);
         }
     }

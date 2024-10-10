@@ -4,12 +4,13 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import app.App;
 import app.Classes.SQLRequest;
 import app.Classes.User;
 import app.Menus.UserMenu;
@@ -23,7 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoanItem implements ActionListener {
-    private static JFrame frame;
     private static JPanel  panel;
     private static JLabel IDError, dateError;
     private static JTextField itemIDTextField;
@@ -31,13 +31,6 @@ public class LoanItem implements ActionListener {
     private static JFormattedTextField datePicker;
     private static DateTimeFormatter formatter;
     public static void main(String[] args) {
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
 
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -47,7 +40,7 @@ public class LoanItem implements ActionListener {
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -148,7 +141,7 @@ public class LoanItem implements ActionListener {
         gbc.gridwidth = 1;
         subPanel.add(confirm, gbc);
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
     }
     
     @Override
@@ -191,7 +184,7 @@ public class LoanItem implements ActionListener {
 
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
 
             try {
@@ -214,7 +207,7 @@ public class LoanItem implements ActionListener {
 
             } catch (SQLException ex) {
                 System.out.println("SQL BROKEN " + ex.getMessage());
-                JOptionPane.showMessageDialog(frame, "Error, server down. Please try again later.");
+                JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
             }
 
             String username = User.username;
@@ -234,10 +227,11 @@ public class LoanItem implements ActionListener {
                 SQL = "UPDATE Items SET Status = \"On Loan\" WHERE ItemID = " + itemID ;
                 SQLRequest.SQLUpdate(SQL);
                 itemIDTextField.setText("");
-                JOptionPane.showMessageDialog(frame, "Item successfully loaned. Enjoy!");
+                JOptionPane.showMessageDialog(App.frame, "Item successfully loaned. Enjoy!");
         
             }
         }else if(e.getSource().equals(backButton)){
+            App.frame.getContentPane().removeAll();
             UserMenu.main(null);
         }
     }

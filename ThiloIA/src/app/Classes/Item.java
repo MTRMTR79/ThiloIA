@@ -3,8 +3,6 @@ package app.Classes;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
-
 public class Item {
     int ItemID;
     String ItemName;

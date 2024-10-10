@@ -1,14 +1,13 @@
 package app.Menus;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import app.App;
 import app.AdminPages.EditTools.AddTool;
 import app.AdminPages.Loans.AddLoan;
 import app.AdminPages.Search.SearchQuery;
-import app.AdminPages.Search.Details.ItemDetails;
 import app.Classes.User;
 import app.loginReg.Login;
 
@@ -20,19 +19,10 @@ import java.awt.event.ActionListener;
 
 
 public class AdminMenu implements ActionListener { //TODO - Fix button layout
-    private static JFrame frame;
     private static JPanel  panel;
     private static JButton search, addItem, confirmReturn, editLoan, loanItemA, logoutButton;
     public static void main(String[] args) {
         
-
-        // Declare and initalise login frame
-        frame = new JFrame(); 
-        frame.setSize(1000, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("IH Inventory Management");
-        frame.setLocationRelativeTo(null);
-
         GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -40,7 +30,7 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(panel);
+        App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
         gbc.gridx = 0;
@@ -138,7 +128,7 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
         
 
 
-        frame.setVisible(true);
+        App.frame.setVisible(true);
 
     }
     @Override
@@ -146,24 +136,20 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
     if (e.getSource().equals(logoutButton)){
     User.setEmail(null);
     User.setUsername(null);
+    App.frame.getContentPane().removeAll();
     Login.main(null);
-    frame.setVisible(false);
-    frame.dispose();
 
     }else if(e.getSource().equals(loanItemA)){
+        App.frame.getContentPane().removeAll();
         AddLoan.main(null);
-        frame.setVisible(false);
-        frame.dispose();
         
     }else if(e.getSource().equals(search)){
+        App.frame.getContentPane().removeAll();
         SearchQuery.main(null);
-        frame.setVisible(false);
-        frame.dispose();
 
     }else if(e.getSource().equals(addItem)){
+        App.frame.getContentPane().removeAll();
         AddTool.main(null);
-        frame.setVisible(false);
-        frame.dispose();
     }
     
     }
