@@ -1,13 +1,16 @@
 package app.Menus;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import app.App;
+import app.AdminPages.ConfirmLoans.ConfirmLoans;
 import app.AdminPages.EditTools.AddTool;
 import app.AdminPages.Loans.AddLoan;
 import app.AdminPages.Search.SearchQuery;
+import app.Classes.SQLRequest;
 import app.Classes.User;
 import app.loginReg.Login;
 
@@ -16,11 +19,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class AdminMenu implements ActionListener { //TODO - Fix button layout
     private static JPanel  panel;
-    private static JButton search, addItem, confirmReturn, editLoan, loanItemA, logoutButton;
+    private static JButton search, addItem, confirmReturn, loanItemA, logoutButton;
     public static void main(String[] args) {
         
         GridBagConstraints gbc = new GridBagConstraints();
@@ -96,36 +101,37 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
         gbc.insets = new Insets(15, 15, 15, 15);
         subPanel.add(addItem, gbc);
 
-        confirmReturn = new JButton("Confirm returns");
-        confirmReturn.addActionListener(new AdminMenu());
+        loanItemA = new JButton("Loan an item");
+        loanItemA.addActionListener(new AdminMenu());
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(15, 15, 15, 15);
-        subPanel.add(confirmReturn, gbc);
+        subPanel.add(loanItemA, gbc);
 
-        loanItemA = new JButton("Loan an item");
-        loanItemA.addActionListener(new AdminMenu());
+        confirmReturn = new JButton("Confirm returns");
+        confirmReturn.addActionListener(new AdminMenu());
+        String SQL = "SELECT COUNT(*) FROM Loans WHERE Status = \"Returned\"";
+        ResultSet result = SQLRequest.SQLQuery(SQL);
+        try {
+            result.next();
+            if (result.getInt(1) == 0){
+                confirmReturn.setVisible(false);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL BROKEN " + ex.getMessage());
+            JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
+        }
+        
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 1;
         gbc.weighty = 1;
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
-        subPanel.add(loanItemA, gbc);
-
-        editLoan = new JButton("Edit a loan");
-        editLoan.addActionListener(new AdminMenu());
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        subPanel.add(editLoan, gbc);
-
-        
+        gbc.insets = new Insets(15, 15, 15, 15);
+        subPanel.add(confirmReturn, gbc);
 
 
         App.frame.setVisible(true);
@@ -150,6 +156,9 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
     }else if(e.getSource().equals(addItem)){
         App.frame.getContentPane().removeAll();
         AddTool.main(null);
+    }else if(e.getSource().equals(confirmReturn)){
+        App.frame.getContentPane().removeAll();
+        ConfirmLoans.main(null);
     }
     
     }

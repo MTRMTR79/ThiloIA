@@ -1,4 +1,4 @@
-package app.UserPages;
+package app.AdminPages.ConfirmLoans;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import app.App;
 import app.Classes.SQLRequest;
 import app.Classes.User;
-import app.Menus.UserMenu;
+import app.Menus.AdminMenu;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class CheckLoans implements ActionListener {
+public class ConfirmLoans implements ActionListener {
     private static JPanel  panel;
     private static JTable resultsTable;
     private static JButton confirm, backButton;
@@ -34,7 +34,7 @@ public class CheckLoans implements ActionListener {
         while (model.getRowCount() > 0){
         model.removeRow(model.getRowCount() - 1);
         }
-        String SQL = "SELECT Loans.*, Items.ItemName FROM Loans LEFT JOIN Items ON Loans.ItemID = Items.ItemID WHERE Username = \"" + User.username + "\"";
+        String SQL = "SELECT Loans.*, Items.ItemName FROM Loans LEFT JOIN Items ON Loans.ItemID = Items.ItemID WHERE Loans.Status = \"Returned\" ";
         String ItemID;
         String ItemName;
         String Username;
@@ -44,20 +44,22 @@ public class CheckLoans implements ActionListener {
         String Status;
         ResultSet result = SQLRequest.SQLQuery(SQL);
         try {
-            while(result.next()){
-                ItemID = result.getString("ItemID");
-                ItemName = result.getString("ItemName");
-                Username = result.getString("Username");
-                DateBorrowed = result.getDate("DateBorrowed").toLocalDate();
-                DueDate = result.getDate("DueDate").toLocalDate();
-                Status = result.getString("Status");
-                if (result.getDate("DateReturned") != null){
-                    DateReturned = result.getDate("DateReturned").toLocalDate();
-                    model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, DateReturned, Status, "Click to Return" });
-                }else{
-                model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, null, Status, "Click to Return" });
+            if (result != null){
+                while(result.next()){
+                    ItemID = result.getString("ItemID");
+                    ItemName = result.getString("ItemName");
+                    Username = result.getString("Username");
+                    DateBorrowed = result.getDate("DateBorrowed").toLocalDate();
+                    DueDate = result.getDate("DueDate").toLocalDate();
+                    Status = result.getString("Status");
+                    if (result.getDate("DateReturned") != null){
+                        DateReturned = result.getDate("DateReturned").toLocalDate();
+                        model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, DateReturned, Status, "Confirm Returned" });
+                    }else{
+                    model.addRow(new Object[] {ItemID, ItemName, Username, DateBorrowed, DueDate, null, Status, "Confirm Returned" });
+                    }
+                
                 }
-            
             }
 
         } catch (SQLException ex){
@@ -88,7 +90,7 @@ public class CheckLoans implements ActionListener {
 
         backButton = new JButton("←");
         backButton.setSize(20,20);
-        backButton.addActionListener(new CheckLoans());
+        backButton.addActionListener(new ConfirmLoans());
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Loans from " + User.username);
@@ -122,11 +124,11 @@ public class CheckLoans implements ActionListener {
                 Point point = returnClick.getPoint();
                 int row = resultsTable.rowAtPoint(point);
                 if (returnClick.getClickCount() == 1 && resultsTable.getSelectedRow() != -1 && resultsTable.getSelectedColumn() == 7){
-                    int result = JOptionPane.showConfirmDialog(null, "Have you returned this Item?", "Have you returned this Item?", JOptionPane.YES_NO_OPTION);
+                    int result = JOptionPane.showConfirmDialog(null, "Has this item been returned?", "Has this item been returned?", JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION){
-                        LocalDate today = LocalDate.now();
-                        String SQL = "UPDATE Loans SET Status = \"Returned\", DateReturned = \"" + today + "\" WHERE ItemID =" + Integer.parseInt(resultsTable.getModel().getValueAt(row, 0).toString());
-                        System.out.println(SQL);
+                        String SQL = "DELETE FROM Loans WHERE ItemID = " + resultsTable.getModel().getValueAt(row, 0);
+                        SQLRequest.SQLUpdate(SQL);
+                        SQL = "UPDATE Items SET LoanUsername = NULL, Status = \"idle\" WHERE ItemID = " + resultsTable.getModel().getValueAt(row, 0);
                         SQLRequest.SQLUpdate(SQL);
                         resultsTable.clearSelection();
                         fillTable();
@@ -159,7 +161,7 @@ public class CheckLoans implements ActionListener {
             
         }else if(e.getSource().equals(backButton)){
             App.frame.getContentPane().removeAll();
-            UserMenu.main(null);
+            AdminMenu.main(null);
         }
     }
 }

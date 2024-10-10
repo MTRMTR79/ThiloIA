@@ -298,15 +298,23 @@ public class LoanDetails implements ActionListener {
             System.out.println("SQL BROKEN " + ex.getMessage());
             JOptionPane.showMessageDialog(App.frame, "Error, server down. Please try again later.");
         }
+        Boolean success = true;
         if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DueDate.getText(),formatter))){
             JOptionPane.showMessageDialog(App.frame, "Error: Due date is before date borrowed");
-
-        } else if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DateReturned.getText(),formatter))){
-            JOptionPane.showMessageDialog(App.frame, "Error: Date returned is before date borrowed");
-
-        }else if (!found){
+            success = false;
+        }
+        if (!DateReturned.getText().equals("")){
+            if (!loan.getDateBorrowed().isBefore(LocalDate.parse(DateReturned.getText(),formatter))){
+                JOptionPane.showMessageDialog(App.frame, "Error: Date returned is before date borrowed");
+                success = false;
+            }
+        }
+        if (!found){
             JOptionPane.showMessageDialog(App.frame, "Error: User not found");
-        }else{
+            success = false;
+        }
+        
+        if (success){
             String SQL;
             loan.setDueDate(LocalDate.parse(DueDate.getText(), formatter));
             loan.setUsername(Username.getText());
@@ -319,11 +327,8 @@ public class LoanDetails implements ActionListener {
                 SQL = "UPDATE Loans SET Username = \"" + loan.getUsername() + "\",  DueDate = \"" + loan.getDueDate()+ "\", Status = \"" + loan.getStatus() + "\" WHERE ItemID = " + loan.getItemID();
             }
 
-            try {
-                SQLRequest.SQLUpdate(SQL);
-            } catch (Exception ex) {
-                System.out.println("SQL BROKEN " + ex.getMessage());
-            }
+            SQLRequest.SQLUpdate(SQL);
+            
 
             Username.setEditable(false);
             DueDate.setEditable(false);
