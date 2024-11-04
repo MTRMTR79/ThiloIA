@@ -29,11 +29,13 @@ public class SearchQuery implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -43,11 +45,18 @@ public class SearchQuery implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new SearchQuery());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Search");
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -58,6 +67,7 @@ public class SearchQuery implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -67,6 +77,7 @@ public class SearchQuery implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -76,6 +87,9 @@ public class SearchQuery implements ActionListener {
         panel.add(subPanel, gbc);
 
         searchQuery = new JTextField("Search");
+        searchQuery.setFont(App.DEFAULT);
+        searchQuery.setForeground(App.DefaultTextColor);
+        searchQuery.setBorder(App.JTextFieldBorder);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -84,6 +98,8 @@ public class SearchQuery implements ActionListener {
 
         String[] searchtypes = new String[]{"Item Name", "Username", "Loans"}; //TODO - add type, group, and ItemID
         searchType = new JComboBox<String>(searchtypes);
+        searchType.setFont(App.DEFAULT);
+        searchType.setForeground(App.DefaultTextColor);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -92,19 +108,24 @@ public class SearchQuery implements ActionListener {
 
         confirm = new JButton("Search");
         confirm.addActionListener(new SearchQuery());
+        confirm.setFont(App.BUTTON);
+        confirm.setForeground(App.ButtonText);
+        confirm.setBackground(App.ButtonColor);
+        confirm.setBorder(App.buttonBorder);
+        confirm.setOpaque(true);
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         subPanel.add(confirm, gbc);
 
         emptyError = new JLabel("Please add a search term.");
+        emptyError.setFont(App.ERROR);
+        emptyError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 2;
         emptyError.setVisible(false);
         subPanel.add(emptyError, gbc);
-
-
         
 
         App.frame.setVisible(true);

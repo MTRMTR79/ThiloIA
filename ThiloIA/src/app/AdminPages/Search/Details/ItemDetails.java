@@ -39,11 +39,13 @@ public class ItemDetails implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(null);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -53,11 +55,18 @@ public class ItemDetails implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new ItemDetails());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Item: " + item.getItemID() + ", " + item.getItemName());
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -68,6 +77,7 @@ public class ItemDetails implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -77,6 +87,7 @@ public class ItemDetails implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -88,6 +99,8 @@ public class ItemDetails implements ActionListener {
         // ItemID, itemName, ItemGroup, ItemType, Status, LoanUsername
 
         JLabel ItemIDLabel = new JLabel("Item ID:");
+        ItemIDLabel.setFont(App.DEFAULT);
+        ItemIDLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -97,12 +110,17 @@ public class ItemDetails implements ActionListener {
 
         ItemID = new JTextField(String.valueOf(item.getItemID()));
         ItemID.setEditable(false);
+        ItemID.setFont(App.DEFAULT);
+        ItemID.setForeground(App.DefaultTextColor);
+        ItemID.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         subPanel.add(ItemID,gbc);
 
 
         JLabel itemNameLabel = new JLabel("Item Name:");
+        itemNameLabel.setFont(App.DEFAULT);
+        itemNameLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -112,12 +130,17 @@ public class ItemDetails implements ActionListener {
 
         itemName = new JTextField(item.getItemName());
         itemName.setEditable(false);
+        itemName.setFont(App.DEFAULT);
+        itemName.setForeground(App.DefaultTextColor);
+        itemName.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 1;
         subPanel.add(itemName,gbc);
 
 
         JLabel itemGroupLabel = new JLabel("Item Group:");
+        itemGroupLabel.setFont(App.DEFAULT);
+        itemGroupLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -132,12 +155,16 @@ public class ItemDetails implements ActionListener {
         }else{
         itemGroup.addItem(item.getItemGroup());
         }
+        itemGroup.setFont(App.DEFAULT);
+        itemGroup.setForeground(App.DefaultTextColor);
         gbc.gridx = 1;
         gbc.gridy = 3;
         subPanel.add(itemGroup,gbc);
 
 
         JLabel itemTypeLabel = new JLabel("Item Type:");
+        itemTypeLabel.setFont(App.DEFAULT);
+        itemTypeLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -152,6 +179,8 @@ public class ItemDetails implements ActionListener {
         }else{
         itemType.addItem(item.getItemType());
         }
+        itemType.setFont(App.DEFAULT);
+        itemType.setForeground(App.DefaultTextColor);
         gbc.gridx = 1;
         gbc.gridy = 2;
         itemType.addActionListener(new ItemDetails());
@@ -159,6 +188,8 @@ public class ItemDetails implements ActionListener {
 
 
         JLabel StatusLabel = new JLabel("Status:");
+        StatusLabel.setFont(App.DEFAULT);
+        StatusLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -169,11 +200,15 @@ public class ItemDetails implements ActionListener {
         String[] statusOptions = { item.getStatus() };
         Status = new JComboBox<String>(statusOptions);
         Status.setEditable(false);
+        Status.setFont(App.DEFAULT);
+        Status.setForeground(App.DefaultTextColor);
         gbc.gridx = 1;
         gbc.gridy = 4;
         subPanel.add(Status,gbc);
 
         JLabel UsernameLabel = new JLabel("Loan Username:");
+        UsernameLabel.setFont(App.DEFAULT);
+        UsernameLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -183,6 +218,9 @@ public class ItemDetails implements ActionListener {
 
         Username = new JTextField(item.getLoanUsername());
         Username.setEditable(false);
+        Username.setFont(App.DEFAULT);
+        Username.setForeground(App.DefaultTextColor);
+        Username.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 5;
         subPanel.add(Username,gbc);
@@ -190,6 +228,11 @@ public class ItemDetails implements ActionListener {
 
         editButton = new JButton("Edit Item");
         editButton.addActionListener(new ItemDetails());
+        editButton.setFont(App.BUTTON);
+        editButton.setForeground(App.ButtonText);
+        editButton.setBackground(App.ButtonColor);
+        editButton.setBorder(App.buttonBorder);
+        editButton.setOpaque(true);
         gbc.gridx = 0;
         gbc.gridy = 7;
         subPanel.add(editButton, gbc);
@@ -197,12 +240,22 @@ public class ItemDetails implements ActionListener {
         confirmButton = new JButton("Confirm Changes");
         confirmButton.addActionListener(new ItemDetails());
         confirmButton.setVisible(false);
+        confirmButton.setFont(App.BUTTON);
+        confirmButton.setForeground(App.ButtonText);
+        confirmButton.setBackground(App.ButtonColor);
+        confirmButton.setBorder(App.buttonBorder);
+        confirmButton.setOpaque(true);
         gbc.gridx = 0;
         gbc.gridy = 7;
         subPanel.add(confirmButton, gbc);
 
         deleteButton = new JButton("Delete Item");
         deleteButton.addActionListener(new ItemDetails());
+        deleteButton.setFont(App.BUTTON);
+        deleteButton.setForeground(App.ButtonText);
+        deleteButton.setBackground(App.ButtonColor);
+        deleteButton.setBorder(App.buttonBorder);
+        deleteButton.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 7;
         subPanel.add(deleteButton, gbc);
@@ -210,6 +263,11 @@ public class ItemDetails implements ActionListener {
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ItemDetails());
         cancelButton.setVisible(false);
+        cancelButton.setFont(App.BUTTON);
+        cancelButton.setForeground(App.ButtonText);
+        cancelButton.setBackground(App.ButtonColor);
+        cancelButton.setBorder(App.buttonBorder);
+        cancelButton.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 7;
         subPanel.add(cancelButton, gbc);
@@ -318,8 +376,13 @@ public class ItemDetails implements ActionListener {
                     System.out.println("SQL BROKEN " + ex.getMessage());
                 }
                 Username.setEditable(false);
+                itemName.setEditable(false);
                 Status.removeAllItems();
                 Status.addItem(item.getStatus());
+                itemType.removeAllItems();
+                itemType.addItem(item.getItemType());
+                itemGroup.removeAllItems();
+                itemGroup.addItem(item.getItemGroup());
                 editButton.setVisible(true);
                 deleteButton.setVisible(true);
                 cancelButton.setVisible(false);
@@ -340,7 +403,7 @@ public class ItemDetails implements ActionListener {
             }else if (item.getItemGroup().equals("-")){
                 SQL = "UPDATE Items SET `ItemName` = \"" + item.getItemName() + "\", `Status` = \"" + item.getStatus() + "\", `LoanUsername` = NULL, `Type` = \"" + item.getItemType() + "\", `Group` = NULL WHERE `ItemID` = " + item.getItemID();
             }else{
-                SQL = "UPDATE Items SET `ItemName` = \"" + item.getItemName() + ", `Status` = \"" + item.getStatus() + "\", `LoanUsername` = NULL, `Type` = \"" + item.getItemType() + "\", `Group` = \"" + item.getItemGroup() + "\" WHERE `ItemID` = " + item.getItemID();
+                SQL = "UPDATE Items SET `ItemName` = \"" + item.getItemName() + "\", `Status` = \"" + item.getStatus() + "\", `LoanUsername` = NULL, `Type` = \"" + item.getItemType() + "\", `Group` = \"" + item.getItemGroup() + "\" WHERE `ItemID` = " + item.getItemID();
             }
 
             try {

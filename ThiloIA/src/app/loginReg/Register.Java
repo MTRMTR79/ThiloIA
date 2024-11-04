@@ -1,5 +1,6 @@
 package app.loginReg;
-import java.sql.*; 
+import java.sql.*;
+import java.util.regex.Pattern;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -61,8 +62,9 @@ public class Register implements ActionListener{
             }
         }
         
-        
-        //TODO - Email regex
+        if (!Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$").matcher(email).matches()){
+            return 4;
+        }
     
         return -1;
     }
@@ -76,13 +78,16 @@ public class Register implements ActionListener{
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setSize(900,500);
+        panel.setBackground(App.PanelBackground);
         App.frame.add(panel);
 
         JLabel title = new JLabel("Welcome to IHIM");
+        title.setFont(App.TITLE);
+        title.setForeground(App.TitleColor);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(5,5,5,5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -90,18 +95,26 @@ public class Register implements ActionListener{
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
+        inputPanel.setOpaque(false);
         gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
         panel.add(inputPanel,gbc);
 
         JLabel username = new JLabel("Username:");
+        username.setFont(App.DEFAULT);
+        username.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         inputPanel.add(username, gbc);
 
         usernameTextField = new JTextField();
+        usernameTextField.setFont(App.DEFAULT);
+        usernameTextField.setForeground(App.DefaultTextColor);
+        usernameTextField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -109,70 +122,113 @@ public class Register implements ActionListener{
         inputPanel.add(usernameTextField, gbc);
 
         usernameError = new JLabel("Username is already in use, please use another one.");
+        usernameError.setFont(App.ERROR);
+        usernameError.setForeground(App.ErrorColor);
         gbc.gridx = 1;
         gbc.gridy = 1;
         usernameError.setVisible(false);
         inputPanel.add(usernameError, gbc);
 
         JLabel password = new JLabel("Password:");
+        password.setFont(App.DEFAULT);
+        password.setForeground(App.DefaultTextColor);
         gbc.gridx = 0;
         gbc.gridy = 2;
         inputPanel.add(password, gbc);
 
         passwordField = new JPasswordField();
+        passwordField.setFont(App.DEFAULT);
+        passwordField.setForeground(App.DefaultTextColor);
+        passwordField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 2;
         inputPanel.add(passwordField, gbc);
 
         passwordError2 = new JLabel("Password is too short, password must be 8-64 characters.");
+        passwordError2.setFont(App.ERROR);
+        passwordError2.setForeground(App.ErrorColor);
         gbc.gridx = 1;
         gbc.gridy = 3;
         passwordError2.setVisible(false);
         inputPanel.add(passwordError2, gbc);
 
         JLabel passwordVer = new JLabel("Confirm Password:");
+        passwordVer.setFont(App.DEFAULT);
+        passwordVer.setForeground(App.DefaultTextColor);
         gbc.gridx = 0;
         gbc.gridy = 4;
         inputPanel.add(passwordVer, gbc);
 
         passwordVerField = new JPasswordField();
+        passwordVerField.setFont(App.DEFAULT);
+        passwordVerField.setForeground(App.DefaultTextColor);
+        passwordVerField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 4;
         inputPanel.add(passwordVerField, gbc);
 
         passwordError3 = new JLabel("Passwords don't match");
+        passwordError3.setFont(App.ERROR);
+        passwordError3.setForeground(App.ErrorColor);
         gbc.gridx = 1;
         gbc.gridy = 5;
         passwordError3.setVisible(false);
         inputPanel.add(passwordError3, gbc);
 
         JLabel email = new JLabel("Email:");
+        email.setFont(App.DEFAULT);
+        email.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 6;
         inputPanel.add(email, gbc);
 
         emailTextField = new JTextField();
+        emailTextField.setFont(App.DEFAULT);
+        emailTextField.setForeground(App.DefaultTextColor);
+        emailTextField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 6;
         inputPanel.add(emailTextField, gbc);
 
         emailError = new JLabel("Email not Valid.");
+        emailError.setFont(App.ERROR);
+        emailError.setForeground(App.ErrorColor);
         gbc.gridx = 1;
         gbc.gridy = 7;
         emailError.setVisible(false);
         inputPanel.add(emailError, gbc);
 
-        loginButton = new JButton("Already have an account? Login here!");
-        loginButton.addActionListener(new Register());
+        JPanel paddingPanel2 = new JPanel();
         gbc.gridx = 0;
         gbc.gridy = 8;
+        gbc.weighty = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        paddingPanel2.setOpaque(false);
+        inputPanel.add(paddingPanel2,gbc);
+
+        loginButton = new JButton("Already have an account? Login here!");
+        loginButton.addActionListener(new Register());
+        loginButton.setFont(App.BUTTON);
+        loginButton.setForeground(App.ButtonText);
+        loginButton.setBackground(App.ButtonColor);
+        loginButton.setBorder(App.buttonBorder);
+        loginButton.setOpaque(true);
+        gbc.insets = new Insets(30,50,15,50);
+        gbc.gridx = 0;
+        gbc.gridy = 9;
         inputPanel.add(loginButton, gbc);
 
         registerButton = new JButton("Register!");
         registerButton.addActionListener(new Register());
+        registerButton.setFont(App.BUTTON);
+        registerButton.setForeground(App.ButtonText);
+        registerButton.setBackground(App.ButtonColor);
+        registerButton.setBorder(App.buttonBorder);
+        registerButton.setOpaque(true);
+        registerButton.setMaximumSize(null);
         gbc.gridx = 1;
-        gbc.gridy = 8;
+        gbc.gridy = 9;
         inputPanel.add(registerButton, gbc);
 
 

@@ -35,11 +35,13 @@ public class AddTool implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -49,11 +51,18 @@ public class AddTool implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new AddTool());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Add Tools");
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -64,6 +73,7 @@ public class AddTool implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -73,6 +83,7 @@ public class AddTool implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -82,6 +93,8 @@ public class AddTool implements ActionListener {
         panel.add(subPanel, gbc);
 
         JLabel itemName = new JLabel("Item Name:");
+        itemName.setFont(App.DEFAULT);
+        itemName.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -90,6 +103,9 @@ public class AddTool implements ActionListener {
         subPanel.add(itemName, gbc);
 
         itemNameTextField = new JTextField();
+        itemNameTextField.setFont(App.DEFAULT);
+        itemNameTextField.setForeground(App.DefaultTextColor);
+        itemNameTextField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -97,6 +113,8 @@ public class AddTool implements ActionListener {
         subPanel.add(itemNameTextField, gbc);
 
         emptyError = new JLabel("Please add a name");
+        emptyError.setFont(App.ERROR);
+        emptyError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -104,6 +122,8 @@ public class AddTool implements ActionListener {
         subPanel.add(emptyError, gbc);
 
         JLabel itemType = new JLabel("Item Type:");
+        itemType.setFont(App.DEFAULT);
+        itemType.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -134,6 +154,9 @@ public class AddTool implements ActionListener {
 
 
         itemTypeComboBox = new JComboBox<String>(itemTypes);
+        itemTypeComboBox.setFont(App.DEFAULT);
+        itemTypeComboBox.setForeground(App.DefaultTextColor);
+        itemTypeComboBox.setBorder(App.JComboBoxBorder);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -142,6 +165,8 @@ public class AddTool implements ActionListener {
         subPanel.add(itemTypeComboBox, gbc);
 
         itemGroup = new JLabel("Item Group:");
+        itemGroup.setFont(App.DEFAULT);
+        itemGroup.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -152,6 +177,9 @@ public class AddTool implements ActionListener {
 
         String[] ItemGroup = new String[] {"-"};
         itemGroupComboBox = new JComboBox<String>(ItemGroup);
+        itemGroupComboBox.setFont(App.DEFAULT);
+        itemGroupComboBox.setForeground(App.DefaultTextColor);
+        itemGroupComboBox.setBorder(App.JComboBoxBorder);
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -161,6 +189,11 @@ public class AddTool implements ActionListener {
 
         confirm = new JButton("Add");
         confirm.addActionListener(new AddTool());
+        confirm.setFont(App.BUTTON);
+        confirm.setForeground(App.ButtonText);
+        confirm.setBackground(App.ButtonColor);
+        confirm.setBorder(App.buttonBorder);
+        confirm.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.gridwidth = 1;

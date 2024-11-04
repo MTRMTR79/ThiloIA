@@ -44,11 +44,13 @@ public class SearchResults implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -58,11 +60,18 @@ public class SearchResults implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new SearchResults());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Results for " + query);
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -73,6 +82,7 @@ public class SearchResults implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -166,6 +176,8 @@ public class SearchResults implements ActionListener {
         resultsTable = new JTable(model);
         resultsTable.setDefaultEditor(Object.class, null);;
         resultsTable.setFillsViewportHeight(true);
+        resultsTable.setFont(App.TABLE);
+        resultsTable.setForeground(App.TableText);
         resultsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent doubleClick) {
                 Point point = doubleClick.getPoint();

@@ -38,11 +38,13 @@ public class AddLoan implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -52,11 +54,18 @@ public class AddLoan implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new AddLoan());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Loan A tool");
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -67,6 +76,7 @@ public class AddLoan implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -76,6 +86,7 @@ public class AddLoan implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -85,6 +96,8 @@ public class AddLoan implements ActionListener {
         panel.add(subPanel, gbc);
 
         JLabel itemID = new JLabel("Item ID:");
+        itemID.setFont(App.DEFAULT);
+        itemID.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -93,6 +106,9 @@ public class AddLoan implements ActionListener {
         subPanel.add(itemID, gbc);
 
         itemIDTextField = new JTextField();
+        itemIDTextField.setFont(App.DEFAULT);
+        itemIDTextField.setForeground(App.DefaultTextColor);
+        itemIDTextField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -100,6 +116,8 @@ public class AddLoan implements ActionListener {
         subPanel.add(itemIDTextField, gbc);
 
         IDError = new JLabel();
+        IDError.setFont(App.ERROR);
+        IDError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -107,6 +125,8 @@ public class AddLoan implements ActionListener {
         subPanel.add(IDError, gbc);
 
         JLabel username = new JLabel("Username:");
+        username.setFont(App.DEFAULT);
+        username.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -115,6 +135,9 @@ public class AddLoan implements ActionListener {
         subPanel.add(username, gbc);
 
         usernameTextField = new JTextField();
+        usernameTextField.setFont(App.DEFAULT);
+        usernameTextField.setForeground(App.DefaultTextColor);
+        usernameTextField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -122,6 +145,8 @@ public class AddLoan implements ActionListener {
         subPanel.add(usernameTextField, gbc);
 
         usernameError = new JLabel();
+        usernameError.setFont(App.ERROR);
+        usernameError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 4;
@@ -130,6 +155,8 @@ public class AddLoan implements ActionListener {
 
 
         JLabel date = new JLabel("Due Date:");
+        date.setFont(App.DEFAULT);
+        date.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -143,6 +170,9 @@ public class AddLoan implements ActionListener {
         datePicker.setColumns(9);
         ZoneId localZoneId = ZoneId.systemDefault();
         datePicker.setValue(Date.from(LocalDate.now().plusDays(14).atStartOfDay(localZoneId).toInstant()));
+        datePicker.setFont(App.DEFAULT);
+        datePicker.setForeground(App.DefaultTextColor);
+        datePicker.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -150,6 +180,8 @@ public class AddLoan implements ActionListener {
         subPanel.add(datePicker, gbc);
 
         dateError = new JLabel();
+        dateError.setFont(App.ERROR);
+        dateError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 6;
@@ -159,6 +191,11 @@ public class AddLoan implements ActionListener {
         
         confirm = new JButton("Add");
         confirm.addActionListener(new AddLoan());
+        confirm.setFont(App.BUTTON);
+        confirm.setForeground(App.ButtonText);
+        confirm.setBackground(App.ButtonColor);
+        confirm.setBorder(App.buttonBorder);
+        confirm.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 7;
         gbc.gridwidth = 1;
@@ -172,6 +209,9 @@ public class AddLoan implements ActionListener {
         if (e.getSource().equals(confirm)){
             Boolean success = true;
             int itemID = 0;
+            IDError.setVisible(false);
+            usernameError.setVisible(false);
+            dateError.setVisible(false);
             try {
                 itemID = Integer.parseInt(itemIDTextField.getText());
             } catch (NumberFormatException numEx) {

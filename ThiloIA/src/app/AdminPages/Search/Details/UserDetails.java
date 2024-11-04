@@ -29,11 +29,13 @@ public class UserDetails implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -43,11 +45,18 @@ public class UserDetails implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new UserDetails());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel(user.getUsername());
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -58,6 +67,7 @@ public class UserDetails implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -67,6 +77,7 @@ public class UserDetails implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -76,6 +87,8 @@ public class UserDetails implements ActionListener {
         panel.add(subPanel, gbc);
 
         JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(App.DEFAULT);
+        usernameLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -85,11 +98,16 @@ public class UserDetails implements ActionListener {
 
         username = new JTextField(user.getUsername());
         username.setEditable(false);
+        username.setFont(App.DEFAULT);
+        username.setForeground(App.DefaultTextColor);
+        username.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         subPanel.add(username,gbc);
 
         JLabel emailLabel = new JLabel("email:");
+        emailLabel.setFont(App.DEFAULT);
+        emailLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -99,6 +117,9 @@ public class UserDetails implements ActionListener {
 
         email = new JTextField(user.getEmail());
         email.setEditable(false);
+        email.setFont(App.DEFAULT);
+        email.setForeground(App.DefaultTextColor);
+        email.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 1;
         subPanel.add(email,gbc);

@@ -47,11 +47,13 @@ public class LoanDetails implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -61,11 +63,18 @@ public class LoanDetails implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
+        backButton.setPreferredSize(App.BackButtonSize);
         backButton.addActionListener(new LoanDetails());
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Item: " + loan.getItemID() + ", " + loan.getItem().getItemName());
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -76,6 +85,7 @@ public class LoanDetails implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -85,6 +95,7 @@ public class LoanDetails implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -94,6 +105,8 @@ public class LoanDetails implements ActionListener {
         panel.add(subPanel, gbc);
 
         JLabel ItemIDLabel = new JLabel("Item ID:");
+        ItemIDLabel.setFont(App.DEFAULT);
+        ItemIDLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -103,11 +116,16 @@ public class LoanDetails implements ActionListener {
 
         ItemID = new JTextField(String.valueOf(loan.getItemID()));
         ItemID.setEditable(false);
+        ItemID.setFont(App.DEFAULT);
+        ItemID.setForeground(App.DefaultTextColor);
+        ItemID.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         subPanel.add(ItemID,gbc);
 
         JLabel ItemNameLabel = new JLabel("Item Name:");
+        ItemNameLabel.setFont(App.DEFAULT);
+        ItemNameLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -117,11 +135,16 @@ public class LoanDetails implements ActionListener {
 
         ItemName = new JTextField(loan.getItem().getItemName());
         ItemName.setEditable(false);
+        ItemName.setFont(App.DEFAULT);
+        ItemName.setForeground(App.DefaultTextColor);
+        ItemName.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 1;
         subPanel.add(ItemName,gbc);
 
         JLabel UsernameLabel = new JLabel("Username:");
+        UsernameLabel.setFont(App.DEFAULT);
+        UsernameLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -131,11 +154,16 @@ public class LoanDetails implements ActionListener {
 
         Username = new JTextField(loan.getUsername());
         Username.setEditable(false);
+        Username.setFont(App.DEFAULT);
+        Username.setForeground(App.DefaultTextColor);
+        Username.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 2;
         subPanel.add(Username,gbc);
 
         JLabel DateBorrowedLabel = new JLabel("Date Borrowed:");
+        DateBorrowedLabel.setFont(App.DEFAULT);
+        DateBorrowedLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -151,11 +179,16 @@ public class LoanDetails implements ActionListener {
         DateBorrowed.setColumns(9);
         DateBorrowed.setEditable(false);
         DateBorrowed.setValue(Date.from(loan.getDateBorrowed().atStartOfDay(localZoneId).toInstant()));
+        DateBorrowed.setFont(App.DEFAULT);
+        DateBorrowed.setForeground(App.DefaultTextColor);
+        DateBorrowed.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 3;
         subPanel.add(DateBorrowed,gbc);
         
         JLabel DueDateLabel = new JLabel("Due Date:");
+        DueDateLabel.setFont(App.DEFAULT);
+        DueDateLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -167,11 +200,16 @@ public class LoanDetails implements ActionListener {
         DueDate.setColumns(9);
         DueDate.setEditable(false);
         DueDate.setValue(Date.from(loan.getDueDate().atStartOfDay(localZoneId).toInstant()));
+        DueDate.setFont(App.DEFAULT);
+        DueDate.setForeground(App.DefaultTextColor);
+        DueDate.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 4;
         subPanel.add(DueDate,gbc);
 
         JLabel DateReturnedLabel = new JLabel("Date Returned:");
+        DateReturnedLabel.setFont(App.DEFAULT);
+        DateReturnedLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -182,6 +220,9 @@ public class LoanDetails implements ActionListener {
         DateReturned = new JFormattedTextField(dateFormat);
         DateReturned.setColumns(9);
         DateReturned.setEditable(false);
+        DateReturned.setFont(App.DEFAULT);
+        DateReturned.setForeground(App.DefaultTextColor);
+        DateReturned.setBorder(App.JTextFieldBorder);
         
         try {
             DateReturned.setValue(Date.from(loan.getDateReturned().atStartOfDay(localZoneId).toInstant()));
@@ -196,6 +237,8 @@ public class LoanDetails implements ActionListener {
         subPanel.add(DateReturned,gbc);
 
         JLabel StatusLabel = new JLabel("Status:");
+        StatusLabel.setFont(App.DEFAULT);
+        StatusLabel.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -206,12 +249,19 @@ public class LoanDetails implements ActionListener {
         String[] statusOptions = { loan.getStatus() };
         Status = new JComboBox<String>(statusOptions);
         Status.setEditable(false);
+        Status.setFont(App.DEFAULT);
+        Status.setForeground(App.DefaultTextColor);
         gbc.gridx = 1;
         gbc.gridy = 6;
         subPanel.add(Status,gbc);
 
         editButton = new JButton("Edit Loan");
         editButton.addActionListener(new LoanDetails());
+        editButton.setFont(App.BUTTON);
+        editButton.setForeground(App.ButtonText);
+        editButton.setBackground(App.ButtonColor);
+        editButton.setBorder(App.buttonBorder);
+        editButton.setOpaque(true);
         gbc.gridx = 0;
         gbc.gridy = 7;
         subPanel.add(editButton, gbc);
@@ -219,12 +269,22 @@ public class LoanDetails implements ActionListener {
         confirmButton = new JButton("Confirm Changes");
         confirmButton.addActionListener(new LoanDetails());
         confirmButton.setVisible(false);
+        confirmButton.setFont(App.BUTTON);
+        confirmButton.setForeground(App.ButtonText);
+        confirmButton.setBackground(App.ButtonColor);
+        confirmButton.setBorder(App.buttonBorder);
+        confirmButton.setOpaque(true);
         gbc.gridx = 0;
         gbc.gridy = 7;
         subPanel.add(confirmButton, gbc);
 
         deleteButton = new JButton("Delete Loan");
         deleteButton.addActionListener(new LoanDetails());
+        deleteButton.setFont(App.BUTTON);
+        deleteButton.setForeground(App.ButtonText);
+        deleteButton.setBackground(App.ButtonColor);
+        deleteButton.setBorder(App.buttonBorder);
+        deleteButton.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 7;
         subPanel.add(deleteButton, gbc);
@@ -232,6 +292,11 @@ public class LoanDetails implements ActionListener {
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new LoanDetails());
         cancelButton.setVisible(false);
+        cancelButton.setFont(App.BUTTON);
+        cancelButton.setForeground(App.ButtonText);
+        cancelButton.setBackground(App.ButtonColor);
+        cancelButton.setBorder(App.buttonBorder);
+        cancelButton.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 7;
         subPanel.add(cancelButton, gbc);
@@ -333,6 +398,7 @@ public class LoanDetails implements ActionListener {
             Username.setEditable(false);
             DueDate.setEditable(false);
             DateReturned.setEditable(false);
+            ItemName.setEditable(false);
             Status.removeAllItems();
             Status.addItem(loan.getStatus());
             editButton.setVisible(true);

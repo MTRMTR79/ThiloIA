@@ -23,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class AdminMenu implements ActionListener { //TODO - Fix button layout
+public class AdminMenu implements ActionListener {
     private static JPanel  panel;
     private static JButton search, addItem, confirmReturn, loanItemA, logoutButton;
     public static void main(String[] args) {
@@ -32,12 +32,14 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
 
 
         panel = new JPanel();
+        panel.setBackground(App.PanelBackground);
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -47,11 +49,18 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
         panel.add(buttonPanel, gbc);
 
         logoutButton = new JButton("Logout");
-        logoutButton.setSize(20,20);
+        logoutButton.setPreferredSize(App.LogoutButtonSize);
         logoutButton.addActionListener(new AdminMenu());
+        logoutButton.setFont(App.BUTTON);
+        logoutButton.setForeground(App.ButtonText);
+        logoutButton.setBackground(App.ButtonColor);
+        logoutButton.setBorder(App.buttonBorder);
+        logoutButton.setOpaque(true);
         buttonPanel.add(logoutButton);
 
         JLabel header = new JLabel("Menu");
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -62,6 +71,7 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -71,6 +81,7 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -81,6 +92,11 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
 
         search = new JButton("Search");
         search.addActionListener(new AdminMenu());
+        search.setFont(App.BUTTON);
+        search.setForeground(App.ButtonText);
+        search.setBackground(App.ButtonColor);
+        search.setBorder(App.buttonBorder);
+        search.setOpaque(true);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -92,6 +108,11 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
 
         addItem = new JButton("Add Item");
         addItem.addActionListener(new AdminMenu());
+        addItem.setFont(App.BUTTON);
+        addItem.setForeground(App.ButtonText);
+        addItem.setBackground(App.ButtonColor);
+        addItem.setBorder(App.buttonBorder);
+        addItem.setOpaque(true);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -103,6 +124,11 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
 
         loanItemA = new JButton("Loan an item");
         loanItemA.addActionListener(new AdminMenu());
+        loanItemA.setFont(App.BUTTON);
+        loanItemA.setForeground(App.ButtonText);
+        loanItemA.setBackground(App.ButtonColor);
+        loanItemA.setBorder(App.buttonBorder);
+        loanItemA.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -112,6 +138,11 @@ public class AdminMenu implements ActionListener { //TODO - Fix button layout
 
         confirmReturn = new JButton("Confirm returns");
         confirmReturn.addActionListener(new AdminMenu());
+        confirmReturn.setFont(App.BUTTON);
+        confirmReturn.setForeground(App.ButtonText);
+        confirmReturn.setBackground(App.ButtonColor);
+        confirmReturn.setBorder(App.buttonBorder);
+        confirmReturn.setOpaque(true);
         String SQL = "SELECT COUNT(*) FROM Loans WHERE Status = \"Returned\"";
         ResultSet result = SQLRequest.SQLQuery(SQL);
         try {

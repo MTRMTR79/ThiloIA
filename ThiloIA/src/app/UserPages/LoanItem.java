@@ -38,11 +38,13 @@ public class LoanItem implements ActionListener {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
+        panel.setBackground(App.PanelBackground);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         App.frame.add(panel);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -52,11 +54,18 @@ public class LoanItem implements ActionListener {
         panel.add(buttonPanel, gbc);
 
         backButton = new JButton("←");
-        backButton.setSize(20,20);
         backButton.addActionListener(new LoanItem());
+        backButton.setPreferredSize(App.BackButtonSize);
+        backButton.setFont(App.BUTTON);
+        backButton.setForeground(App.ButtonText);
+        backButton.setBorder(App.buttonBorder);
+        backButton.setBackground(App.ButtonColor);
+        backButton.setOpaque(true);
         buttonPanel.add(backButton);
 
         JLabel header = new JLabel("Loan A tool");
+        header.setFont(App.TITLE);
+        header.setForeground(App.TitleColor);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -67,6 +76,7 @@ public class LoanItem implements ActionListener {
         panel.add(header, gbc);
 
         JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -76,6 +86,7 @@ public class LoanItem implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
+        subPanel.setOpaque(false);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -85,6 +96,8 @@ public class LoanItem implements ActionListener {
         panel.add(subPanel, gbc);
 
         JLabel itemID = new JLabel("Item ID:");
+        itemID.setFont(App.DEFAULT);
+        itemID.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -93,6 +106,9 @@ public class LoanItem implements ActionListener {
         subPanel.add(itemID, gbc);
 
         itemIDTextField = new JTextField();
+        itemIDTextField.setFont(App.DEFAULT);
+        itemIDTextField.setForeground(App.DefaultTextColor);
+        itemIDTextField.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -100,6 +116,8 @@ public class LoanItem implements ActionListener {
         subPanel.add(itemIDTextField, gbc);
 
         IDError = new JLabel();
+        IDError.setFont(App.ERROR);
+        IDError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -108,6 +126,8 @@ public class LoanItem implements ActionListener {
 
         
         JLabel date = new JLabel("Due Date:");
+        date.setFont(App.DEFAULT);
+        date.setForeground(App.DefaultTextColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -120,6 +140,9 @@ public class LoanItem implements ActionListener {
         datePicker.setColumns(9);
         datePicker.setValue(LocalDate.now().plusDays(14));
         datePicker.setEditable(false);
+        datePicker.setFont(App.DEFAULT);
+        datePicker.setForeground(App.DefaultTextColor);
+        datePicker.setBorder(App.JTextFieldBorder);
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -127,15 +150,21 @@ public class LoanItem implements ActionListener {
         subPanel.add(datePicker, gbc);
 
         dateError = new JLabel();
+        dateError.setFont(App.ERROR);
+        dateError.setForeground(App.ErrorColor);
         gbc.insets = new Insets(5,50,5,50);
         gbc.gridx = 1;
         gbc.gridy = 3;
         dateError.setVisible(false);
         subPanel.add(dateError, gbc);
-
         
         confirm = new JButton("Add");
         confirm.addActionListener(new LoanItem());
+        confirm.setFont(App.BUTTON);
+        confirm.setForeground(App.ButtonText);
+        confirm.setBackground(App.ButtonColor);
+        confirm.setBorder(App.buttonBorder);
+        confirm.setOpaque(true);
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
